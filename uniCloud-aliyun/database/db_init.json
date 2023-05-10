@@ -124,7 +124,7 @@
 	},
 	"opendb-tempdata": {
 		"data": [
-	
+
 		],
 		"index": [
 			{
@@ -413,24 +413,13 @@
 				"parent_id":"system-uni"
 			},
 			{
-				"_id": "system-uni-vk-pay-orders",
-				"sort": 4,
-				"url": "/pages_plugs/system_uni/vk-pay-orders",
-				"_add_time": 1596416400000,
-				"enable": true,
-				"icon": "",
-				"menu_id": "system-uni-vk-pay-orders",
-				"name": "支付订单明细",
-				"parent_id": "system-uni"
-			},
-			{
 				"_id": "system-uni-uni-id-log",
 				"_add_time": 1596416400000,
 				"permission_id":"system-uni-uni-id-log",
 				"permission_name": "系统 - 用户登录日志管理",
 				"comment":"",
 				"url": ["admin/system_uni/uni-id-log/sys/*"],
-				"sort": 8,
+				"sort": 4,
 				"enable":true,
 				"match_mode":1,
 				"parent_id":"system-uni"
@@ -442,7 +431,7 @@
 				"permission_name": "系统 - 操作日志管理",
 				"comment":"",
 				"url": ["admin/system_uni/admin-log/sys/*"],
-				"sort": 9,
+				"sort": 5,
 				"enable":true,
 				"match_mode":1,
 				"parent_id":"system-uni"
@@ -599,6 +588,17 @@
 				"parent_id": "system-uni"
 			},
 			{
+				"_id": "system-uni-vk-pay-orders",
+				"sort": 4,
+				"url": "/pages_plugs/system_uni/vk-pay-orders",
+				"_add_time": 1596416400000,
+				"enable": true,
+				"icon": "",
+				"menu_id": "system-uni-vk-pay-orders",
+				"name": "支付订单明细",
+				"parent_id": "system-uni"
+			},
+			{
 				"_id": "system-uni-uni-id-log",
 				"sort": 8,
 				"url": "/pages_plugs/system_uni/uni-id-log",
@@ -695,41 +695,41 @@
 		]
 	},
 	"opendb-app-versions": {
-		"data": [],
-		"index": [{
-				"IndexName": "_add_time",
-				"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "_add_time", "Direction": "1" }], "MgoIsUnique": false }
-			},
-			{
-				"IndexName": "appid",
-				"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "appid", "Direction": "1" }], "MgoIsUnique": false }
-			},
-			{
-				"IndexName": "name",
-				"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "name", "Direction": "1" }], "MgoIsUnique": false }
-			},
-			{
-				"IndexName": "platform",
-				"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "platform", "Direction": "1" }], "MgoIsUnique": false }
-			},
-			{
-				"IndexName": "type",
-				"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "type", "Direction": "1" }], "MgoIsUnique": false }
-			},
-			{
-				"IndexName": "uni_platform",
-				"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "uni_platform", "Direction": "1" }], "MgoIsUnique": false }
-			},
-			{
-				"IndexName": "create_env",
-				"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "create_env", "Direction": "1" }], "MgoIsUnique": false }
-			},
-			{
-				"IndexName": "stable_publish",
-				"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "stable_publish", "Direction": "1" }], "MgoIsUnique": false }
-			}
-		]
-	},
+			"data": [],
+			"index": [{
+					"IndexName": "_add_time",
+					"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "_add_time", "Direction": "1" }], "MgoIsUnique": false }
+				},
+				{
+					"IndexName": "appid",
+					"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "appid", "Direction": "1" }], "MgoIsUnique": false }
+				},
+				{
+					"IndexName": "name",
+					"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "name", "Direction": "1" }], "MgoIsUnique": false }
+				},
+				{
+					"IndexName": "platform",
+					"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "platform", "Direction": "1" }], "MgoIsUnique": false }
+				},
+				{
+					"IndexName": "type",
+					"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "type", "Direction": "1" }], "MgoIsUnique": false }
+				},
+				{
+					"IndexName": "uni_platform",
+					"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "uni_platform", "Direction": "1" }], "MgoIsUnique": false }
+				},
+				{
+					"IndexName": "create_env",
+					"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "create_env", "Direction": "1" }], "MgoIsUnique": false }
+				},
+				{
+					"IndexName": "stable_publish",
+					"MgoKeySchema": { "MgoIndexKeys": [{ "Name": "stable_publish", "Direction": "1" }], "MgoIsUnique": false }
+				}
+			]
+		},
 	"opendb-admin-log":{
 	  "data": [
 	
