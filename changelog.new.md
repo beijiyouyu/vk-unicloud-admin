@@ -1,7 +1,6 @@
 * 1、【升级】`vk-unicloud-admin-ui` 包升级至 `1.16.9`
 * 2、【优化】`万能表格` 右侧按钮支持属性 icon、plain、round、circle、loading
-
-**注意：本次更新涉及内置页面改动，请仔细比对**
+* 3、【优化】其他细节
 
 ##### 框架更新步骤 [点击查看](https://vkdoc.fsq.pub/admin/1/update.html)
 ##### 框架学习Q群：`22466457` 欢迎萌新和大佬来使用和共同改进框架
