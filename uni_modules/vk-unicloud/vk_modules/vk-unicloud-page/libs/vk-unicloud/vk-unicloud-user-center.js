@@ -1017,6 +1017,20 @@ export default {
 		});
 	},
 	/**
+	 * 生成qq小程序码
+	 * @param {String} path         必须是已经发布的小程序存在的页面（否则报错），例如 pages/index/index, 根路径前不要填加 /,不能携带参数（参数请放在scene字段里），如果不填写这个字段，默认跳主页面
+	 * res 返回参数说明
+	 * @param {Number} code 错误码，0表示成功
+	 * @param {String} msg 详细信息
+	 */
+	getQQMiniCode(obj = {}) {
+		addLoading(obj, "create");
+		return callFunction({
+			...obj,
+			url: 'user/kh/getQQMiniCode',
+		});
+	},
+	/**
 	 * App升级中心 - 检测是当前版本是否需要升级
 	 * res 返回参数说明
 	 * @param {Number} code 错误码，0表示成功

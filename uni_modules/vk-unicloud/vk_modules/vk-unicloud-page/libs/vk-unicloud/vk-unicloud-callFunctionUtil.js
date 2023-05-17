@@ -880,9 +880,12 @@ class CallFunctionUtil {
 			console.log("【总体耗时】: ", Logger.runTime, "毫秒【含页面渲染】");
 			console.log("【请求时间】: ", vk.pubfn.timeFormat(Logger.startTime, "yyyy-MM-dd hh:mm:ss"));
 			if (Logger.error) {
-				console.error("【Error】: ", Logger.error);
+				let errorLog = console.warn || console.error;
 				if (Logger.error.err && Logger.error.err.stack) {
+					console.error("【Error】: ", Logger.error);
 					console.error("【Stack】: ", Logger.error.err.stack);
+				} else {
+					errorLog("【Error】: ", Logger.error);
 				}
 			}
 			console.log(`%c--------【结束】${Logger.label}【${functionType}请求】【${name}】【${url}】--------`, `color: ${colorStr};font-size: 12px;font-weight: bold;`);
