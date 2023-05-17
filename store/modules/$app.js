@@ -27,6 +27,11 @@ export default {
 		config:{
 			...config
 		},
+		/**
+		 * vk.getVuex('$app.originalPage');
+		 * vk.setVuex('$app.originalPage', originalPage);
+		 */
+		originalPage: $app.originalPage || null, // 跳登录前的页面
 		// 静态资源路径 vk.getVuex('$app.staticUrl.navBar.logo1') vk.setVuex('$app.staticUrl.navBar.logo1','')
 		staticUrl: $app.staticUrl || config.staticUrl,
 		// 左侧菜单列表（树形结构） vk.getVuex('$app.navMenu');
