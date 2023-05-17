@@ -24,6 +24,15 @@
 				<el-button class="login_but" type="primary" @click="submit">登录</el-button>
 			</el-form>
 
+			<view v-if="testUser && testUser.show && testUser.list && testUser.list.length>0" class="test-user-list">
+				<view>体验账号：</view>
+				<view v-for="(item,index) in testUser.list" :key="index" class="test-user-item">
+					<text class="test-user-item-nickname">{{ item.nickname }}</text>
+					<text class="test-user-item-username">账号：{{ item.username }}</text>
+					<text class="test-user-item-password">密码：{{ item.password }}</text>
+				</view>
+			</view>
+
 			<!-- <view class="btns-box">
 				<text @click="shortMessageLogin">短信验证码登录</text>
 				<text @click="noCccount">没有账号？</text>
@@ -42,6 +51,7 @@ export default {
 	data() {
 		return {
 			...config.staticUrl.navBar,
+			testUser: config.login && config.login.testUser || {},
 			form1: {
 				username: "",
 				password: "",
@@ -238,6 +248,24 @@ export default {
 			}
 			.register {
 				color: #46d0e7;
+			}
+		}
+	}
+	.test-user-list{
+		margin-top: 10px;
+		user-select: text;
+		font-size: 12px;
+		color: #606266;
+		.test-user-item{
+			margin: 5px 0;
+			.test-user-item-nickname{
+
+			}
+			.test-user-item-username{
+				margin-left: 10px;
+			}
+			.test-user-item-password{
+				margin-left: 10px;
 			}
 		}
 	}

@@ -11,7 +11,15 @@ export default {
 	functionName: "router",
 	// 登录页面路径
 	login: {
-		url: "/pages/login/index"
+		url: "/pages/login/index",
+		testUser: {
+			show: false, // 是否显示
+			list: [
+				{ username: "test11", password: "123456", nickname: "高级管理员" },
+				{ username: "test12", password: "123456", nickname: "初级管理员" },
+				{ username: "test13", password: "123456", nickname: "无权限用户" }
+			]
+		}
 	},
 	// 首页页面路径
 	index: {
