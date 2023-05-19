@@ -18,7 +18,9 @@ export default {
 				isOnLaunch = false; // 重新标记为非首次页面
 				const currentPage = this.vk.pubfn.getCurrentPage() || {};
 				let pagePath = currentPage.pagePath || `/${currentPage.route}` || url;
-				this.vk.pubfn.checkLogin({ url: pagePath, isOnLaunch: true }); // 检测是否需要登录
+				let fullPath = currentPage.fullPath;
+				let options = currentPage.options;
+				this.vk.pubfn.checkLogin({ url: pagePath, fullPath, options, isOnLaunch: true }); // 检测是否需要登录
 			}
 		}
 	},

@@ -51,7 +51,7 @@ util.navigateTo = function(obj) {
 		success: function(res) {
 			if (res.needLogin) {
 				obj.url = vk.pubfn.getPageFullPath(obj.url);
-				vk.navigate.originalPage = vk.pubfn.copyObject(obj);
+				vk.navigate.setOriginalPage(obj);
 				obj.url = config.login.url;
 				// login拦截器开始-----------------------------------------------------------
 				let { interceptor = {} } = config;
@@ -69,7 +69,7 @@ util.navigateTo = function(obj) {
 				}
 				// login拦截器结束-----------------------------------------------------------
 			} else {
-				vk.navigate.originalPage = null;
+				vk.navigate.setOriginalPage(null);
 			}
 			util._navigateTo(obj);
 		}
@@ -214,10 +214,28 @@ util.navigateBack = function(obj) {
  */
 util.originalTo = function() {
 	let vk = uni.vk;
-	let originalPage = vk.pubfn.copyObject(vk.navigate.originalPage);
-	vk.navigate.originalPage = null;
+	let originalPage = vk.navigate.getOriginalPage();
+	vk.navigate.setOriginalPage(null);
 	util.redirectTo(originalPage);
 };
+
+/**
+ * 获取登录前的页面
+ * vk.navigate.getOriginalPage();
+ */
+util.getOriginalPage = function() {
+	return uni.vk.getVuex('$app.originalPage');
+};
+
+/**
+ * 设置登录前的页面
+ * vk.navigate.setOriginalPage(originalPage);
+ */
+util.setOriginalPage = function(originalPage) {
+	vk.navigate.originalPage = originalPage; // 兼容老版本
+	return uni.vk.setVuex('$app.originalPage', originalPage); // 新版本
+};
+
 
 /**
  * 跳转到首页

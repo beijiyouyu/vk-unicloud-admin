@@ -226,6 +226,7 @@ pubfn.validator = function(type) {
  */
 pubfn.test = function(str, type = "") {
 	type = type.toLowerCase();
+	let newStr;
 	switch (type) {
 		case 'mobile': //手机号码
 			return new RegExp(/^1[3|4|5|6|7|8|9][0-9]{9}$/).test(str);
@@ -282,6 +283,15 @@ pubfn.test = function(str, type = "") {
 			return new RegExp(/^[A-Z]+$/).test(str);
 		case 'html': //HTML标记
 			return new RegExp(/<("[^"]*"|'[^']*'|[^'">])*>/).test(str);
+		case 'image': //是否图片格式
+			newStr = str.split("?")[0];
+			return new RegExp(/\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg)$/).test(newStr);
+		case 'video': //是否视频格式
+			newStr = str.split("?")[0];
+			return new RegExp(/\.(mp4|mpg|mpeg|dat|asf|avi|rm|rmvb|mov|wmv|flv|mkv|m3u8|3gp)$/).test(newStr);
+		case 'audio': //是否视频格式
+			newStr = str.split("?")[0];
+			return new RegExp(/\.(mp3)$/).test(newStr);
 		default:
 			return true;
 	}
@@ -2264,8 +2274,8 @@ pubfn.checkLogin = function(obj = {}) {
 			success: function(res) {
 				if (res.needLogin) {
 					// 记录下原本要跳转的页面
-					url = vk.pubfn.getPageFullPath(url);
-					vk.navigate.originalPage = { url };
+					url = vk.pubfn.getPageFullPath(obj.fullPath || url);
+					vk.navigate.setOriginalPage({ url });
 					if (obj.isOnLaunch) vk.navigate.isOnLaunchToLogin = true; // 标记为首次启动的页面需要登录
 					uni.reLaunch({
 						url: loginUrl,
@@ -2278,7 +2288,15 @@ pubfn.checkLogin = function(obj = {}) {
 						}
 					});
 				} else {
-					vk.navigate.originalPage = null;
+					// #ifdef H5
+					// 解决微信公众号登录无法跳回原页面的问题
+					if (!obj.options || !obj.options.code || !obj.options.state) {
+						vk.navigate.setOriginalPage(null);
+					}
+					// #endif
+					// #ifndef H5
+					vk.navigate.setOriginalPage(null);
+					// #endif
 				}
 			}
 		});
