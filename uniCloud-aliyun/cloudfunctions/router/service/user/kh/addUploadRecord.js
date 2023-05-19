@@ -5,10 +5,14 @@ module.exports = {
 	 * data 请求参数 说明
 	 * @param {String} url					文件外网访问url
 	 * @param {String} name 				文件名
-	 * @param {Number} size				文件大小
+	 * @param {Number} size					文件大小
 	 * @param {String} file_id			文件id
-	 * @param {String} provider		供应商
-	 * @param {String} category_id 分类ID
+	 * @param {String} provider			供应商
+	 * @param {String} category_id	分类ID
+	 * @param {Number} width				图片\视频的宽度
+	 * @param {Number} height				图片\视频的高度
+	 * @param {Number} orientation	图片\视频的旋转方向
+	 * @param {Number} duration			视频的总时长
 	 * res 返回参数说明
 	 * @param {Number} code 错误码，0表示成功
 	 * @param {String} msg 详细信息
@@ -32,12 +36,15 @@ module.exports = {
 			duration
 		} = data;
 		let type = "other";
-		let suffix = url.substring(url.lastIndexOf(".") + 1).toLowerCase();
-		if (["png", "jpg", "jpeg", "gif", "bmp", "svg", "webp"].indexOf(suffix) > -1) {
+
+		if (vk.pubfn.test(url, "image")) {
 			type = "image";
-		} else if (["avi", "mp3", "mp4", "3gp", "mov", "rmvb", "rm", "flv", "mkv"].indexOf(suffix) > -1) {
+		} else if (vk.pubfn.test(url, "video")) {
 			type = "video";
+		} else if (vk.pubfn.test(url, "audio")) {
+			type = "video"; // 这里audio也分类为video
 		}
+
 		if (vk.pubfn.isNull(original_name)) original_name = url;
 		let dataJson = {
 			user_id: uid,

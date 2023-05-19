@@ -22,7 +22,7 @@
     "dependencies": {
         "element-ui": "2.15.13",
         "umy-ui": "1.1.6",
-        "vk-unicloud-admin-ui": "^1.16.9"
+        "vk-unicloud-admin-ui": "^1.16.12"
     },
     "engines": {
         "HBuilderX": "^3.1.10"

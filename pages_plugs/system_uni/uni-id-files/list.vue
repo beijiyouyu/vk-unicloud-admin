@@ -121,6 +121,8 @@
 		<updateFileName v-model="formDatas.updateFileName"></updateFileName>
 		<updateVideo v-model="formDatas.updateVideo"></updateVideo>
 		<preview v-model="formDatas.preview"></preview>
+		<uploadProgress v-model="formDatas.uploadProgress" @success="getList();"></uploadProgress>
+
 
 	</view>
 </template>
@@ -135,6 +137,7 @@ import updateFileCategory from "./form/updateFileCategory";
 import updateFileName from "./form/updateFileName";
 import updateVideo from "./form/updateVideo";
 import preview from "./form/preview";
+import uploadProgress from "./form/uploadProgress";
 
 export default {
 	components: {
@@ -143,7 +146,8 @@ export default {
 		updateFileCategory,
 		updateFileName,
 		updateVideo,
-		preview
+		preview,
+		uploadProgress
 	},
 	data() {
 		// 页面数据变量
@@ -283,10 +287,10 @@ export default {
 			let fileType;
 			let extension = [];
 			if(type === "image"){
-				extension = ["png", "jpg", "jpeg", "gif", "bmp", "svg"];
+				extension = ["png", "jpg", "jpeg", "gif", "bmp", "svg", "webp", "jfif", "dpg"];
 				fileType = "image";
 			}else if(type === "video"){
-				extension = ["avi", "mp3", "mp4", "3gp", "mov", "rmvb", "rm", "flv", "mkv"];
+				extension = ["avi", "mp3", "mp4", "3gp", "mov", "rmvb", "rm", "flv", "mkv", "wmv", "m3u8", "mpg", "mpeg", "dat", "asf"];
 				fileType = "video";
 			}else if(type === "other"){
 				extension = ["txt","pdf","xls","xlsx","ppt","pptx","doc","docx","rar","zip"];
@@ -294,24 +298,35 @@ export default {
 			uni.chooseFile({
 				extension,
 				success: async res => {
-					vk.showLoading("上传中...");
-					for (let i = 0; i < res.tempFilePaths.length; i++) {
-						let percentage = vk.pubfn.toDecimal((i+1) / res.tempFilePaths.length * 100, 0);
-						vk.showLoading(`上传进度：${percentage}%`);
-						try {
-							await vk.callFunctionUtil.uploadFile({
-								filePath: res.tempFilePaths[i],
-								file: res.tempFiles[i],
-								needSave: true,
-								fileType,
-								category_id: that.queryForm1.formData.category_id
-							});
-						} catch(err){
-							console.error(err);
-						}
-					}
-					vk.hideLoading();
-					that.getList();
+					let item = {
+						tempFilePaths: res.tempFilePaths,
+						tempFiles: res.tempFiles,
+						categoryId: that.queryForm1.formData.category_id,
+						fileType,
+					};
+					vk.pubfn.openForm('uploadProgress', { item });
+					// vk.showLoading("上传中...");
+					// for (let i = 0; i < res.tempFilePaths.length; i++) {
+					// 	let percentage = vk.pubfn.toDecimal((i+1) / res.tempFilePaths.length * 100, 0);
+					// 	try {
+					// 		await vk.uploadFile({
+					// 			filePath: res.tempFilePaths[i],
+					// 			file: res.tempFiles[i],
+					// 			needSave: true,
+					// 			fileType,
+					// 			category_id: that.queryForm1.formData.category_id,
+					// 			onUploadProgress:function(progressRes){
+					// 				// 上传过程中
+					// 				vk.showLoading(`文件${i+1}：${progressRes.progress}%\n`);
+					// 			},
+					// 		});
+					// 		vk.showLoading(`总上传进度：${percentage}%`);
+					// 	} catch(err){
+					// 		console.error(err);
+					// 	}
+					// }
+					// vk.hideLoading();
+					// that.getList();
 				}
 			});
 		},
@@ -376,6 +391,7 @@ export default {
 			}else{
 				src = `${url}?x-oss-process=video/snapshot,t_1000,f_jpg,w_${width},h_${height},m_fast`;
 			}
+			console.log('src: ', src)
 			return src;
 		},
 		durationFilter(value){
