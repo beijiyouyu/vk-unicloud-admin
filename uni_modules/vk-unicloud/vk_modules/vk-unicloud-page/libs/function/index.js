@@ -236,8 +236,8 @@ pubfn.test = function(str, type = "") {
 			return new RegExp(/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/).test(str);
 		case 'mobilecode': //6位数字验证码
 			return new RegExp(/^[0-9]{6}$/).test(str);
-		case 'username': //账号以字母开头，长度在6~18之间，只能包含字母、数字和下划线
-			return new RegExp(/^[a-zA-Z]([-_a-zA-Z0-9]{5,17})$/).test(str)
+		case 'username': //账号以字母开头，长度在3~32之间，只能包含字母、数字和下划线
+			return new RegExp(/^[a-zA-Z]([-_a-zA-Z0-9]{2,31})$/).test(str)
 		case 'pwd': //密码长度在6~18之间，只能包含字母、数字和下划线和@
 			return new RegExp(/^([a-zA-Z0-9_@]){6,18}$/).test(str)
 		case 'password': //密码长度在6~18之间，只能包含字母、数字和下划线和@

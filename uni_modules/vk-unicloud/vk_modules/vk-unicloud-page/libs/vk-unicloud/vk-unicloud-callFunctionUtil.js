@@ -816,7 +816,9 @@ class CallFunctionUtil {
 			errMsg = globalErrorCode["cloudfunction-timeout"] || "请求超时，请重试！";
 		} else if (errMsg.indexOf("reaches burst limit") > -1) {
 			errMsg = globalErrorCode["cloudfunction-reaches-burst-limit"] || "系统繁忙，请稍后再试。";
-		}
+		} else if (res.code === "InternalServerError") {
+			sysErr = true;
+		} 
 		let runKey = true;
 		if (typeof that.interceptor.fail == "function") {
 			runKey = that.interceptor.fail({

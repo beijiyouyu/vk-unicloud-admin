@@ -24,6 +24,7 @@ module.exports = {
 		} = data;
 		// 超过180天有10万个限制,故这里强制设为90天
 		res = await vk.openapi.weixin.urllink.generate({
+			...data,
 			path,
 			query,
 			env_version,

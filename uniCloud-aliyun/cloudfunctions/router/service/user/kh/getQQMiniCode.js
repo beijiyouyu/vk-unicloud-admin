@@ -16,15 +16,13 @@ module.exports = {
 			path
 		} = data;
 
-		res = await vk.openapi.qq.acode.getMiniCode({
-			path
-		});
+		res = await vk.openapi.qq.acode.getMiniCode(data);
 		if (typeof res === "object" && res.code) {
 			return res;
 		}
 		try {
 			// 二进制转base64
-			let base64 = Buffer.from(res, 'binary').toString('base64')
+			let base64 = Buffer.from(res, 'binary').toString('base64');
 			return {
 				code: 0,
 				base64: `data:image/png;base64,${base64}`

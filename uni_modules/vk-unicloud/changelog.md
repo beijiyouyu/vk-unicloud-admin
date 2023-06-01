@@ -1,3 +1,10 @@
+## 2.14.2（2023-06-01）
+* 1、【优化】`user/kh/addUploadRecord` 细节
+* 2、【优化】`vk.importObject` 支持 `importObjectOptions` 参数 [传送门](https://vkdoc.fsq.pub/client/uniCloud/cloudfunctions/cloudObject.html#uni-vk-importobject%E7%9A%84%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95)
+* 3、【优化】vuex模块化支持多级目录
+* 4、【优化】微信公众号登录后不能跳回登录前页面的问题。
+* 5、【调整】`vk.pubfn.test(str, 'username')` 检测的长度调整为3-32位
+* 完整框架项目地址：`https://ext.dcloud.net.cn/plugin?id=2204`[点击查看](https://ext.dcloud.net.cn/plugin?id=2204)
 ## 2.14.1（2023-05-17）
 * 1、【新增】QQ小程序API [详情](https://vkdoc.fsq.pub/client/uniCloud/plus/qq.html#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
 * 2、【新增】抖音小程序API [详情](https://vkdoc.fsq.pub/client/uniCloud/plus/douyin.html)

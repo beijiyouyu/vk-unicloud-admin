@@ -111,14 +111,15 @@ export default {
 					action: "",
 					// 表单字段显示规则
 					columns: [
-						{ key: "key", title: "健名", type: "text", placeholder: "请输入健名" },
-						{ key: "value", title: "健值", type: "json", placeholder: "请输入健值" },
+						{ key: "key", title: "键名", type: "text", placeholder: "请输入键名", disabled:["update"], tips: "键名唯一，且不能修改" },
+						{ key: "value", title: "键值", type: "json", placeholder: "请输入键值" },
+						{ key: "expired_at", title: "过期时间", type: "date", dateType: "datetime", placeholder: "请选择过期时间", tips: "若不设置过期时间则代表永不过期" },
 						{ key: "comment", title: "备注", type: "textarea", placeholder: "请输入备注" }
 					],
 					// 表单验证规则
 					rules: {
-						key: [{ required: true, message: "健名不能为空", trigger: "blur" }],
-						value: [{ required: true, message: "健值不能为空", trigger: "change" }]
+						key: [{ required: true, message: "键名不能为空", trigger: "blur" }],
+						value: [{ required: true, message: "键值不能为空", trigger: "change" }]
 					},
 					// add 代表添加 update 代表修改
 					formType: "",

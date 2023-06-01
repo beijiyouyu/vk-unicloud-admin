@@ -24,6 +24,7 @@ module.exports = {
 		} = data;
 		// 超过180天有10万个限制,故这里强制设为90天
 		res = await vk.openapi.weixin.urlscheme.generate({
+			...data,
 			// 跳转到的目标小程序信息。
 			jump_wxa: {
 				path, // 小程序页面路径

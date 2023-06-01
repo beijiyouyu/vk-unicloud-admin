@@ -13,7 +13,7 @@ async test(){
 	});
 }
  */
-var importObject = function(name) {
+var importObject = function(name, importObjectOptions = {}) {
 	const newObj = new Proxy(importObject, {
 		get: function(target, key, receiver) {
 			/**
@@ -24,7 +24,19 @@ var importObject = function(name) {
 			 * @param {Object}   loading   与title二选一，格式为 { name: "loading", that: that }  name是变量名，that是数据源，当发起请求时，自动that[name] = true; 请求结束后，自动that[name] = false;
 			 */
 			return async function(options) {
+				// 如果importObjectOptions中指定了easy为true，代表options的值就是请求参数
+				if (importObjectOptions.easy) {
+					delete importObjectOptions.easy;
+					options = {
+						data: options
+					}
+				}
+				// 如果importObjectOptions中指定了data，代表有默认请求参数，需要加到请求参数中
+				if (importObjectOptions.data) {
+					options.data = Object.assign(importObjectOptions.data, options.data)
+				}
 				return uni.vk.callFunction({
+					...importObjectOptions,
 					...options,
 					url: `${name}.${key}`
 				});

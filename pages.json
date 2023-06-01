@@ -45,6 +45,7 @@
 				{ "path": "form/form-array-object" },
 				{ "path": "form/form-basic" },
 				{ "path": "form/form-cert" , "style": { "topWindow": false,"leftWindow": false } },
+				{ "path": "form/form-pay-cert" , "style": { "topWindow": false,"leftWindow": false } },
 				{ "path": "form/form-inline" },
 				{ "path": "form/form-dialog" },
 				{ "path": "form/form-pro" },
