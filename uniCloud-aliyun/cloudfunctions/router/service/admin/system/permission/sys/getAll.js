@@ -17,9 +17,10 @@ module.exports = {
 			pageIndex: 1,
 			pageSize: 500,
 			whereJson: {
-				parent_id: _.in([null,""])
+				parent_id: _.in([null, ""]),
+				permission_id: _.exists(true)
 			},
-			treeProps:{
+			treeProps: {
 				level: 3
 			}
 		});
