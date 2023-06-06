@@ -173,7 +173,17 @@ module.exports = async function(data = {}) {
 				return key.indexOf('mp') !== -1 && hasValue(appInfo[key])
 			})
 		}
-
+		
+		// 解决二维码不显示的问题
+		if (appInfo.icon_url && appInfo.icon_url.indexOf("http") == 0) {
+			let imageBuffer = await vk.request({
+				url: appInfo.icon_url,
+				method: "GET",
+				dataType: "default"
+			});
+			appInfo.icon_url = "data:image/png;base64," + imageBuffer.toString('base64');
+		}
+		
 		const html = TE.render(templatePage)(Object.assign({}, appInfo, defaultOptions));
 
 		if (!(defaultOptions.hasApp || defaultOptions.hasH5 || defaultOptions.hasMP || defaultOptions
