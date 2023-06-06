@@ -40,6 +40,7 @@ module.exports = {
 		"service": {
 			// 邮箱发送服务
 			"email": {
+				"codeExpiresIn": 180, // 邮件验证码有效期（单位秒）
 				// qq邮箱参数配置
 				"qq": {
 					"host": "smtp.qq.com",
