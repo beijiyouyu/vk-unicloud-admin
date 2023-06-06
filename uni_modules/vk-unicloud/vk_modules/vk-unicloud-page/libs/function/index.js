@@ -201,27 +201,38 @@ pubfn.validator = function(type) {
 /**
  * 检测文本是否满足指定格式
  * @param {String} str 需要检测的文本
- * @param {String} type 检测类型
+ * @param {String} type 检测类型（忽略大小写）
  * 包含
  * mobile 手机号码
  * tel 座机
  * card 身份证
  * mobileCode 6位数字验证码
- * username 账号以字母开头，长度在6~18之间，只能包含字母、数字和下划线
- * pwd 密码长度在6~18之间，只能包含字母、数字和下划线和@
- * payPwd 支付密码 6位纯数字
+ * username 账号以字母开头，长度在3~32之间，只能包含字母、数字和下划线
+ * pwd 密码长度在6~18之间，只能包含字母、数字和下划线
+ * password 与pwd效果一致，密码长度在6~18之间，只能包含字母、数字和下划线
+ * paypwd 支付密码 6位纯数字
  * postal 邮政编码
- * QQ QQ号
+ * qq QQ号
  * email 邮箱
- * URL 网址
- * IP IP地址
+ * money 金额(小数点只允许2位)
+ * url 网址
+ * ip IP地址
  * date 日期 2020-08-03
  * time 时间 12:12:12
  * dateTime 日期+时间 2020-08-03 12:12:12
- * number 数字
- * english 英文
- * chinese 中文
- * HTML HTML标记
+ * number 纯数字
+ * english 纯英文
+ * chinese 纯中文
+ * english+number 英文+数字
+ * english+number+_ 英文+数字+_
+ * english+number+_- 英文+数字+_-
+ * lower 小写
+ * upper 大写
+ * version 版本号 xx.xx.xx (xx必须是数字)
+ * html html格式
+ * image 图片
+ * video 视频
+ * audio 音频
  * vk.pubfn.test(str, type);
  */
 pubfn.test = function(str, type = "") {
@@ -289,7 +300,7 @@ pubfn.test = function(str, type = "") {
 		case 'video': //是否视频格式
 			newStr = str.split("?")[0];
 			return new RegExp(/\.(mp4|mpg|mpeg|dat|asf|avi|rm|rmvb|mov|wmv|flv|mkv|m3u8|3gp)$/).test(newStr);
-		case 'audio': //是否视频格式
+		case 'audio': //是否音频格式
 			newStr = str.split("?")[0];
 			return new RegExp(/\.(mp3)$/).test(newStr);
 		default:

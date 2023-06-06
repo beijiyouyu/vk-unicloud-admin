@@ -232,7 +232,7 @@ util.getOriginalPage = function() {
  * vk.navigate.setOriginalPage(originalPage);
  */
 util.setOriginalPage = function(originalPage) {
-	vk.navigate.originalPage = originalPage; // 兼容老版本
+	uni.vk.navigate.originalPage = originalPage; // 兼容老版本
 	return uni.vk.setVuex('$app.originalPage', originalPage); // 新版本
 };
 
