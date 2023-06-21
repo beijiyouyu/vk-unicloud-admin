@@ -18,7 +18,20 @@ module.exports = {
 		let { uid } = data;
 		let res = {};
 		// 业务逻辑开始-----------------------------------------------------------
-		res = await uniID.loginByQQ(data);
+		let {
+			code,
+			accessToken,
+			type,
+			myInviteCode,
+			needPermission
+		} = data;
+		res = await uniID.loginByQQ({
+			code,
+			accessToken,
+			type,
+			myInviteCode,
+			needPermission
+		});
 		if (res.token) {
 			if (!res.msg) {
 				res.msg = res.type === "register" ? "注册成功" : "登录成功";

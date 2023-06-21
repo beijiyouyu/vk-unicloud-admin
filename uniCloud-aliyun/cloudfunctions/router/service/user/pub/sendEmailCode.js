@@ -29,6 +29,9 @@ module.exports = {
 		} = data;
 		let res = { code: 0, msg: 'ok' };
 		// 业务逻辑开始----------------------------------------------------------- 
+		if (!vkmail) {
+			return { code: -1, msg: "请先添加公共模块：vk-mail（右键对应的云函数，点击管理公共模块或扩展库依赖，勾选vk-mail依赖）" };
+		}
 		let code = vk.pubfn.random(6, "0123456789");
 		let param = {
 			code,
@@ -36,7 +39,7 @@ module.exports = {
 			email
 		};
 		// 发送验证码开始
-		var emailConfig = config.vk.service.email;
+		let emailConfig = config.vk.service.email;
 		// 如果配置设置了过期时间，则使用配置的过期时间，否则默认180秒
 		param.expiresIn = emailConfig.codeExpiresIn || 180;
 		let emailService = vkmail.createTransport({

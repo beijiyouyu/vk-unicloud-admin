@@ -25,7 +25,24 @@ module.exports = {
 		let { uid } = data;
 		let res = { code: 0, msg: '' };
 		// 业务逻辑开始-----------------------------------------------------------
-		res = await uniID.loginByUniverify(data);
+		let {
+			access_token,
+			openid,
+			type,
+			password,
+			inviteCode,
+			myInviteCode,
+			needPermission
+		} = data;
+		res = await uniID.loginByUniverify({
+			access_token,
+			openid,
+			type,
+			password,
+			inviteCode,
+			myInviteCode,
+			needPermission
+		});
 		if (res.token) {
 			if (!res.msg) {
 				res.msg = res.type === "register" ? "注册成功" : "登录成功";

@@ -1,8 +1,7 @@
 module.exports = {
 	/**
-	 * 用户登录(支付宝授权)
+	 * 用户登录（邮箱+验证码登录）
 	 * @url user/pub/loginByEmail 前端调用的url参数地址
-	 * @description 用户登录(支付宝授权)
 	 * data 请求参数 说明
 	 * @param {String} email 邮箱
 	 * @param {String} code 邮箱收到的验证码
@@ -10,7 +9,6 @@ module.exports = {
 	 * @param {String} password 密码，当前用户为新注册时生效
 	 * @param {String} myInviteCode 设置当前注册用户自己的邀请码，当前用户为新注册时生效（不传会自动生成）
 	 * @param {Boolean} needPermission 设置为true时会在checkToken时返回用户权限（permission），如果是在admin端，需传true
-	 * @param {Array} role 设定用户角色，当前用户为新注册时生效
 	 * res 返回参数说明
 	 * @param {Number} code 错误码，0表示成功
 	 * @param {String} msg 详细信息
@@ -23,15 +21,14 @@ module.exports = {
 		let { uid } = data;
 		let res = {};
 		// 业务逻辑开始-----------------------------------------------------------
-		let { email, code, type, password, needPermission, myInviteCode, role } = data;
+		let { email, code, type, password, needPermission, myInviteCode } = data;
 		res = await uniID.loginByEmail({
 			email,
 			code,
 			type,
 			password,
 			myInviteCode,
-			needPermission,
-			role
+			needPermission
 		});
 		if (res.token) {
 			if (!res.msg) {

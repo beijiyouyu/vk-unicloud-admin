@@ -11,7 +11,6 @@ module.exports = {
 	 * @param {String} inviteCode 邀请人的邀请码，当前用户为新注册时生效
 	 * @param {String} myInviteCode 设置当前注册用户自己的邀请码，当前用户为新注册时生效（不传会自动生成）
 	 * @param {Boolean} needPermission 设置为true时会在checkToken时返回用户权限（permission），如果是在admin端，需传true
-	 * @param {Array} role 设定用户角色，当前用户为新注册时生效
 	 * res 返回参数说明
 	 * @param {Number} code 错误码，0表示成功
 	 * @param {String} msg 详细信息
@@ -24,7 +23,15 @@ module.exports = {
 		let { uid } = data;
 		let res = {};
 		// 业务逻辑开始-----------------------------------------------------------
-		let { mobile, code, password, inviteCode, myInviteCode, needPermission, role, type } = data;
+		let {
+			mobile,
+			code,
+			type,
+			password,
+			inviteCode,
+			myInviteCode,
+			needPermission
+		} = data;
 		res = await uniID.loginBySms({
 			mobile,
 			code,
@@ -32,8 +39,7 @@ module.exports = {
 			password,
 			inviteCode,
 			myInviteCode,
-			needPermission,
-			role
+			needPermission
 		});
 		// 修改用户昵称为:手机尾号xxxx用户
 		if (res.token) {

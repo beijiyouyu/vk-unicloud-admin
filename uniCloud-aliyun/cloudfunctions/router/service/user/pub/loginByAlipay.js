@@ -18,7 +18,18 @@ module.exports = {
 		let { uid } = data;
 		let res = {};
 		// 业务逻辑开始-----------------------------------------------------------
-		res = await uniID.loginByAlipay(data);
+		let { 
+			code,
+			type,
+			myInviteCode,
+			needPermission
+		} = data;
+		res = await uniID.loginByAlipay({
+			code,
+			type,
+			myInviteCode,
+			needPermission
+		});
 		if (res.token) {
 			if (!res.msg) {
 				res.msg = res.type === "register" ? "注册成功" : "登录成功";
