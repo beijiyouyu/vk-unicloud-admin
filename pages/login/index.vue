@@ -4,29 +4,23 @@
 			<image class="image" :src="vk.getVuex('$app.staticUrl.navBar.logo')" mode="aspectFit"></image>
 			<text class="login-title">欢迎登录</text>
 
-			<el-form :model="form1" status-icon :rules="rules" ref="rule1" label-width="60px" class="form-view">
-				<el-form-item label="账 号" prop="pass" class="form-item">
-					<el-input class="input" type="text" v-model="form1.username" placeholder="请输入用户名"></el-input>
-				</el-form-item>
+			<el-form :model="form1" status-icon :rules="rules" ref="form1" label-width="60px" class="form-view">
+				<el-form-item label="账 号" prop="pass" class="form-item"><el-input class="input" type="text" v-model="form1.username" placeholder="请输入用户名"></el-input></el-form-item>
 				<el-form-item label="密 码" prop="checkPass" class="form-item">
 					<el-input class="input" type="password" v-model="form1.password" show-password placeholder="请输入密码" maxlength="20"></el-input>
 				</el-form-item>
 				<view class="password-box">
 					<view class="remember-password">
-						<el-checkbox v-model="checked">
-							<text class="tips" style="font-size: 12px;">记住密码</text>
-						</el-checkbox>
+						<el-checkbox v-model="checked"><text class="tips" style="font-size: 12px;">记住密码</text></el-checkbox>
 					</view>
-					<view class="forget-password">
-						<text @click="forgetPassWord" style="font-size: 12px;">忘记密码？</text>
-					</view>
+					<view class="forget-password"><text @click="forgetPassWord" style="font-size: 12px;">忘记密码？</text></view>
 				</view>
 				<el-button class="login_but" type="primary" @click="submit">登录</el-button>
 			</el-form>
 
-			<view v-if="testUser && testUser.show && testUser.list && testUser.list.length>0" class="test-user-list">
+			<view v-if="testUser && testUser.show && testUser.list && testUser.list.length > 0" class="test-user-list">
 				<view>体验账号：</view>
-				<view v-for="(item,index) in testUser.list" :key="index" class="test-user-item">
+				<view v-for="(item, index) in testUser.list" :key="index" class="test-user-item">
 					<text class="test-user-item-nickname">{{ item.nickname }}</text>
 					<text class="test-user-item-username">账号：{{ item.username }}</text>
 					<text class="test-user-item-password">密码：{{ item.password }}</text>
@@ -38,6 +32,7 @@
 				<text @click="noCccount">没有账号？</text>
 				<text class="register" @click="register">立即注册</text>
 			</view> -->
+
 		</view>
 	</view>
 </template>
@@ -51,14 +46,18 @@ export default {
 	data() {
 		return {
 			...config.staticUrl.navBar,
-			testUser: config.login && config.login.testUser || {},
+			testUser: (config.login && config.login.testUser) || {}, // 体验账号信息
+			// 表单信息
 			form1: {
 				username: "",
 				password: "",
 				needPermission: true
 			},
-			checked: false,
-			rules: {}
+			checked: false, // 是否记录密码
+			// 表单验证规则
+			rules: {
+
+			},
 		};
 	},
 	// 监听 - 页面每次【加载时】执行(如：前进)
@@ -68,17 +67,18 @@ export default {
 		that.options = options;
 		that.init(options);
 	},
-	mounted() {
-
-	},
+	mounted() {},
 	methods: {
 		// 页面初始化
 		init() {
+			let that = this;
 			let { login } = vk.getVuex("$user");
-			if (login && login.password) {
-				that.form1.username = login.username;
-				that.form1.password = login.password;
-				that.checked = true;
+			if (login) {
+				if (login.username) that.form1.username = login.username;
+				if (login.password) {
+					that.form1.password = login.password;
+					that.checked = true;
+				}
 			}
 			if (!getApp().isAllowLoginBackground()) {
 				return false;
@@ -86,13 +86,14 @@ export default {
 			// 执行以下函数,主要是为了使云函数提前热启动
 			vk.userCenter.checkToken({
 				loading: true,
-				success: function(data) {
+				success: data => {
 					that.login_success();
 				}
 			});
 		},
 		// 表单提交
 		submit() {
+			let that = this;
 			vk.userCenter.login({
 				data: that.form1,
 				success: data => {
@@ -105,8 +106,9 @@ export default {
 						vk.setVuex("$user.login.username", that.form1.username);
 						vk.setVuex("$user.login.password", that.form1.password);
 					} else {
-							// 删除本地缓存
-						vk.setVuex("$user.login.username", "");							vk.setVuex("$user.login.password", "");
+						// 删除本地缓存
+						vk.setVuex("$user.login.username", "");
+						vk.setVuex("$user.login.password", "");
 					}
 					that.login_success();
 				}
@@ -125,11 +127,12 @@ export default {
 				pages.length >= 2 &&
 				pages[pages.length - 2] &&
 				pages[pages.length - 2].route &&
-				pages[pages.length - 2].route.indexOf("login/index") == -1
+				pages[pages.length - 2].route.indexOf("login/") == -1
 			) {
+				// 如果上一个页面不是login目录下的，则调上一个页面
 				vk.reLaunch("/" + pages[pages.length - 2].route);
 			} else {
-				// 进入首页
+				// 否则进入首页
 				vk.navigateToHome();
 			}
 		},
@@ -251,20 +254,19 @@ export default {
 			}
 		}
 	}
-	.test-user-list{
+	.test-user-list {
 		margin-top: 10px;
 		user-select: text;
 		font-size: 12px;
 		color: #606266;
-		.test-user-item{
+		.test-user-item {
 			margin: 5px 0;
-			.test-user-item-nickname{
-
+			.test-user-item-nickname {
 			}
-			.test-user-item-username{
+			.test-user-item-username {
 				margin-left: 10px;
 			}
-			.test-user-item-password{
+			.test-user-item-password {
 				margin-left: 10px;
 			}
 		}
