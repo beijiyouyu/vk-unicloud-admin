@@ -8,7 +8,7 @@
 		></vk-data-page-header>
 		<view class="page-body">
 			<!-- 表格组件开始 -->
-			<vk-data-table ref="table1" :data="table1.data" :columns="table1.columns"></vk-data-table>
+			<vk-data-table ref="table1" :data="table1.data" :columns="table1.columns" :row-no="true"></vk-data-table>
 			<!-- 表格组件结束 -->
 		</view>
 		<!-- 页面内容结束 -->

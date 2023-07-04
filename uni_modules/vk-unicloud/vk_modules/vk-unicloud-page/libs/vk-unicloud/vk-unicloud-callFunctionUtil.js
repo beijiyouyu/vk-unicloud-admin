@@ -442,13 +442,24 @@ class CallFunctionUtil {
 		}
 		/**
 		 * 云函数上传图片
-		 * @param {String} 	filePath   	要上传的文件对象
-		 * @param {String} 	cloudPath  	文件的绝对路径，包含文件名(若不传，会自动生成文件名)
-		 * @param {String} 	fileType 		文件类型，可选image、video、audio 默认image
-		 * @param {Function} onUploadProgress 	上传进度回调
-		 * @param {Function} success  					请求成功时，执行的回调函数
-		 * @param {Function} fail  	 					请求失败时，执行的回调函数
-		 * @param {Function} complete 					无论请求成功与否，都会执行的回调函数
+		 * @param {String} 	title										上传时的loading提示语
+		 * @param {String} 	file										要上传的文件对象，file与filePath二选一即可
+		 * @param {String} 	filePath								要上传的文件路径，file与filePath二选一即可	
+		 * @param {String} 	suffix									指定上传后的文件后缀，如果传了file 参数，则此参数可不传
+		 * @param {String} 	provider								云存储供应商，支持：unicloud、aliyun	
+		 * @param {String} 	cloudPath								指定上传后的云端文件路径（不指定会自动生成）cloudPath优先级大于cloudDirectory
+		 * @param {String} 	cloudDirectory					指定上传后的云端文件目录（不指定会自动生成）
+		 * @param {String} 	needSave								是否需要将图片信息保存到admin素材库
+		 * @param {String} 	category_id							素材库分类id，当needSave为true时生效	
+		 * @param {String} 	uniCloud								上传到其他空间时使用，uniCloud和env二选一即可
+		 * @param {String} 	env											上传到其他空间时使用，uniCloud和env二选一即可
+		 * @param {String} 	cloudPathAsRealPath			阿里云目录支持，需HBX3.8.5以上版本才支持
+		 * @param {String} 	cloudPathRemoveChinese	删除文件名中的中文
+		 * @param {String} 	fileType								文件类型，可选image、video、audio 不用传，会自动识别
+		 * @param {Function} onUploadProgress				上传进度回调
+		 * @param {Function} success								上传成功时，执行的回调函数
+		 * @param {Function} fail  	 								上传失败时，执行的回调函数
+		 * @param {Function} complete 							无论上传成功与否，都会执行的回调函数
 		 * vk.callFunctionUtil.uploadFile
 		 */
 		this.uploadFile = (obj = {}) => {
@@ -470,7 +481,10 @@ class CallFunctionUtil {
 				needSave = false,
 				category_id,
 				uniCloud: myCloud,
-				env = "default"
+				env = "default",
+				cloudPathAsRealPath = true, // 阿里云目录支持，需HBX3.8.5以上版本才支持
+				cloudPathRemoveChinese = true, // 删除文件名中的中文
+				cloudDirectory,
 			} = obj;
 			// 获取文件类型(image:图片 video:视频 other:其他)
 			let fileType = this.getFileType(obj);
@@ -500,6 +514,7 @@ class CallFunctionUtil {
 					filePath: filePath,
 					cloudPath: cloudPath,
 					fileType: fileType,
+					cloudPathAsRealPath,
 					onUploadProgress: function(progressEvent) {
 						let percentCompleted = Math.round(
 							(progressEvent.loaded * 100) / progressEvent.total
@@ -897,17 +912,22 @@ class CallFunctionUtil {
 	// 生成文件名
 	createFileName(obj = {}) {
 		let {
+			file,
+			filePath,
 			index = 0,
-				file,
-				filePath
+			cloudPathRemoveChinese = true,
+			cloudDirectory
 		} = obj;
 		let suffix = this.getFileSuffix(obj);
 		let oldName = index + "." + suffix;
+		// 注意：小程序无法获取到 file.name
 		if (file && file.name) {
 			let suffixName = file.name.substring(file.name.lastIndexOf(".") + 1);
 			if (suffixName && suffixName.length < 5) oldName = file.name;
 			// 只保留["数字","英文",".","-"]
-			oldName = oldName.replace(/[^a-zA-Z.-d]/g, '');
+			if (cloudPathRemoveChinese) {
+				oldName = oldName.replace(/[^a-zA-Z.-d]/g, '');
+			}
 			if (oldName.indexOf(".") == 0) oldName = "0" + oldName;
 		}
 		let date = new Date();
@@ -917,10 +937,20 @@ class CallFunctionUtil {
 		let dateTimeEnd8 = dateTime.substring(dateTime.length - 8, dateTime.length);
 		let randomNumber = vk.pubfn.random(8); // 8位随机数
 		// 文件路径
-		let newFilePath = dateYYYYMMDD + "/";
-		// 文件名  = 时间戳  - 随机数32位  + 后缀名
+		let newFilePath = "";
+		if (cloudDirectory) {
+			// 如果自定义了上传目录，则使用自定义的上传目录
+			if (cloudDirectory.lastIndexOf("/") !== cloudDirectory.length-1) {
+				cloudDirectory = cloudDirectory + "/";
+			}
+			newFilePath = cloudDirectory;
+		} else {
+			// 否则，使用年月日作为上传目录
+			newFilePath = dateYYYYMMDD + "/";
+		}
+		// 文件名  = 时间戳后8位  - 随机数8位  + 原本文件名
 		let fileNickName = dateTimeEnd8 + "-" + randomNumber + "-" + oldName;
-		// 文件名全称(包含文件路径) = 外网域名  + 文件路径  + 文件名
+		// 文件名全称（包含文件路径） = 文件路径  + 文件名
 		let fileFullName = newFilePath + fileNickName;
 		return fileFullName;
 	}

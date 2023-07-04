@@ -44,7 +44,7 @@ vk.request({
 	url: `https://www.xxx.com/api/xxxx`,
 	method:"POST",
 	header:{
-		"content-type": "application/x-www-form-urlencoded",
+		"content-type": "application/json; charset=utf-8",
 	},
 	data:{
 
@@ -61,7 +61,7 @@ vk.request({
 requestUtil.request = function(obj = {}) {
 	let vk = uni.vk;
 	// 去除值为 undefined 的参数
-	if(typeof obj.data === "object"){
+	if (typeof obj.data === "object") {
 		obj.data = vk.pubfn.copyObject(obj.data);
 	}
 	// 注入自定义全局参数开始-----------------------------------------------------------
@@ -106,17 +106,24 @@ requestUtil.request = function(obj = {}) {
 	if (typeof obj.header === "undefined" && typeof obj.headers !== "undefined") {
 		obj.header = obj.headers;
 	}
-	
+
 	// 自动注入token到请求头开始-----------------------------------------------------------
 	if (typeof vk.getToken === "function") {
 		let uni_id_token = vk.getToken();
 		if (uni_id_token) {
 			if (!obj.header) obj.header = {};
-			obj.header["uni_id_token"] = uni_id_token;
+			obj.header["uni-id-token"] = uni_id_token;
 		}
 	}
 	// 自动注入token到请求头结束-----------------------------------------------------------
-	
+	let interceptor = obj.interceptor;
+	delete obj.interceptor;
+	if (interceptor && typeof interceptor.invoke === "function") {
+		let interceptorRes = interceptor.invoke(obj);
+		if (interceptorRes === false) {
+			return;
+		}
+	}
 	if (typeof obj.timeout === "undefined") obj.timeout = 30000; // 超时时间，单位 ms(默认30秒)
 	let Logger = {};
 	if (config.debug) {
@@ -134,7 +141,13 @@ requestUtil.request = function(obj = {}) {
 	let promiseAction = new Promise(function(resolve, reject) {
 		uni.request({
 			...obj,
-			success: function(res) {
+			success: (res) => {
+				if (interceptor && typeof interceptor.success === "function") {
+					let interceptorRes = interceptor.success(res);
+					if (interceptorRes === false) {
+						return;
+					}
+				}
 				requestSuccess({
 					res,
 					params: obj,
@@ -143,7 +156,13 @@ requestUtil.request = function(obj = {}) {
 					reject
 				});
 			},
-			fail: function(res) {
+			fail: (res) => {
+				if (interceptor && typeof interceptor.fail === "function") {
+					let interceptorRes = interceptor.fail(res);
+					if (interceptorRes === false) {
+						return;
+					}
+				}
 				requestFail({
 					res,
 					params: obj,
@@ -151,7 +170,13 @@ requestUtil.request = function(obj = {}) {
 					reject
 				});
 			},
-			complete: function(res) {
+			complete: (res) => {
+				if (interceptor && typeof interceptor.complete === "function") {
+					let interceptorRes = interceptor.complete(res);
+					if (interceptorRes === false) {
+						return;
+					}
+				}
 				requestComplete({
 					res,
 					params: obj,
@@ -190,7 +215,7 @@ function requestSuccess(obj = {}) {
 	}
 	if (vk.pubfn.isNotNullAll(errorMsgName, data[errorMsgName])) {
 		data.msg = data[errorMsgName];
-		if(typeof data[errorMsgName] === "string"){
+		if (typeof data[errorMsgName] === "string") {
 			delete data[errorMsgName];
 		}
 	}
@@ -206,6 +231,8 @@ function requestSuccess(obj = {}) {
 		if (title) vk.hideLoading();
 		if (loading) vk.setLoading(false, loading);
 		if (needOriginalRes) data.originalRes = vk.pubfn.copyObject(res);
+		if (data.vk_uni_token) vk.callFunctionUtil.saveToken(data.vk_uni_token);
+		if (data.userInfo && data.needUpdateUserInfo) vk.callFunctionUtil.updateUserInfo(data);
 		if (typeof success === "function") success(data);
 		if (typeof resolve === "function") resolve(data);
 	}
@@ -248,7 +275,7 @@ function requestFail(obj = {}) {
 	if (loading) vk.setLoading(false, loading);
 	let runKey = true;
 	// 自定义拦截器开始-----------------------------------------------------------
-	let { interceptor={} } = vk.callFunctionUtil.getConfig();
+	let { interceptor = {} } = vk.callFunctionUtil.getConfig();
 	if (interceptor.request && typeof interceptor.request.fail == "function") {
 		runKey = interceptor.request.fail({
 			vk,
@@ -300,9 +327,12 @@ function requestComplete(obj = {}) {
 		console.log("【总体耗时】: ", Logger.runTime, "毫秒【含页面渲染】");
 		console.log("【请求时间】: ", vk.pubfn.timeFormat(Logger.startTime, "yyyy-MM-dd hh:mm:ss"));
 		if (Logger.error) {
-			console.error("【Error】: ", Logger.error);
+			let errorLog = console.warn || console.error;
 			if (Logger.error.err && Logger.error.err.stack) {
+				console.error("【Error】: ", Logger.error);
 				console.error("【Stack】: ", Logger.error.err.stack);
+			} else {
+				errorLog("【Error】: ", Logger.error);
 			}
 		}
 		console.log("%c--------【结束】【服务器请求】【" + Logger.action + "】--------", 'color: ' + colorStr + ';font-size: 12px;font-weight: bold;');

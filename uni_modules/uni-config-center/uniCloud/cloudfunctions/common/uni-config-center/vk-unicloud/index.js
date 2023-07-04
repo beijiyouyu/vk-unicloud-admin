@@ -50,6 +50,16 @@ module.exports = {
 						"user": "你的邮箱@qq.com",
 						"pass": "邮箱授权码"
 					}
+				},
+				// 163邮箱配置
+				"163":{
+					"host": "smtp.163.com",
+					"port": 465,
+					"secure": true,
+					"auth": {
+						"user": "",
+						"pass": ""
+					}
 				}
 			},
 			// 日志服务
@@ -92,19 +102,37 @@ module.exports = {
 			}
 		},
 		// 其他小程序的密钥 当需要多个小程序绑定同一服务空间,并调用小程序服务端API时需要填写 暂只支持微信小程序
-		"oauth":{
+		"oauth": {
 			// 微信小程序
-			"weixin":{
+			"weixin": {
 				// 密钥列表
-				"list":[
-					{
-						"appid" : "",
-						"appsecret" : ""
-					},
-					{
-						"appid" : "",
-						"appsecret" : ""
-					}
+				"list": [
+					{ "appid": "", "appsecret": "" },
+					{ "appid": "", "appsecret": "" }
+				]
+			},
+			// 支付宝
+			"alipay": {
+				// 密钥列表
+				"list": [
+					{ "appid": "", "privateKey": "" },
+					{ "appid": "", "privateKey": "" }
+				]
+			},
+			// qq
+			"qq": {
+				// 密钥列表
+				"list": [
+					{ "appid": "", "appsecret": "" },
+					{ "appid": "", "appsecret": "" }
+				]
+			},
+			// 抖音
+			"toutiao": {
+				// 密钥列表
+				"list": [
+					{ "appid": "", "appsecret": "" },
+					{ "appid": "", "appsecret": "" }
 				]
 			}
 		}

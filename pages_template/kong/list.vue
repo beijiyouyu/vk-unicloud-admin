@@ -61,7 +61,7 @@
 				:action="form1.props.action"
 				:form-type="form1.props.formType"
 				:columns='form1.props.columns'
-				label-width="80px"
+				label-width="120px"
 				@success="form1.props.show = false;refresh();"
 			></vk-data-form>
 		</vk-data-dialog>

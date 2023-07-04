@@ -8,6 +8,7 @@ import pubfn              from './libs/function/index'
 import modal              from './libs/function/modal'
 import navigate           from './libs/function/vk.navigate'
 import localStorage       from './libs/function/vk.localStorage'
+import sessionStorage     from './libs/function/vk.sessionStorage'
 import aliyunOSSUtil      from './libs/function/aliyunOSSUtil'
 import openapi            from './libs/openapi/index'
 import requestUtil        from './libs/function/vk.request'
@@ -80,8 +81,10 @@ var vk = {
 	$once:                   navigate.$once,
 	// 移除全局自定义事件监听器。
 	$off:                    navigate.$off,
-	// 本地缓存
+	// 本地持久
 	localStorage:            localStorage,
+	// 本地会话缓存
+	sessionStorage:          sessionStorage,
 
 	// 获取应用语言列表
 	getLocaleList:           pubfn.getLocaleList,
@@ -93,8 +96,10 @@ var vk = {
 	setLocale:               pubfn.setLocale,
 
 
-	// 本地缓存
+	// 本地持久缓存
 	...localStorage,
+	// 本地会话缓存
+	...sessionStorage,
 	// 阿里云oss
 	aliyunOSSUtil,
 	// 更新管理器

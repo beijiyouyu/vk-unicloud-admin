@@ -32,6 +32,13 @@ module.exports = {
 		if (!vkmail) {
 			return { code: -1, msg: "请先添加公共模块：vk-mail（右键对应的云函数，点击管理公共模块或扩展库依赖，勾选vk-mail依赖）" };
 		}
+		// 参数非空检测
+		let nullKey = vk.pubfn.isNullOneByObject({ email, type });
+		if (nullKey) return { code: -1, msg: '参数 '+nullKey+' 不能为空' };
+		
+		if (vk.pubfn.test(email, "email")) return { code: -1, msg: "邮箱格式错误" };
+		if (vk.pubfn.isNull(type)) return { code: -1, msg: "type不能为空" };
+		
 		let code = vk.pubfn.random(6, "0123456789");
 		let param = {
 			code,

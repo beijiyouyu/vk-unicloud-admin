@@ -3,7 +3,7 @@
 		<vk-data-menu-nav
 			v-if="vk.getVuex('$app.inited')"
 			:data="vk.getVuex('$app.navMenu')"
-			:uniqueOpened="true"
+			:unique-opened="true"
 			:collapse="vk.getVuex('$app.leftCollapse')"
 			:collapse-transition="false"
 			:theme="theme"

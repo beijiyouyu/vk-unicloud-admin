@@ -19,11 +19,21 @@ module.exports = {
 		let res = {};
 		// 业务逻辑开始-----------------------------------------------------------
 		// 用户登录(账号+密码)
+		if (typeof data.username === "number") data.username = String(data.username).trim();
+		if (typeof data.password === "number") data.password = String(data.password).trim();
+		
+		let {
+			needPermission,
+			username,
+			password,
+			queryField = ['username', 'email', 'mobile'], // 不指定queryField的情况下只会查询username
+		} = data;
 
 		res = await uniID.login({
-			...event.data,
-			// 不指定queryField的情况下只会查询username
-			queryField: ['username', 'email', 'mobile']
+			username,
+			password,
+			needPermission,
+			queryField
 		});
 		if (res.token) {
 			if (!res.msg) {

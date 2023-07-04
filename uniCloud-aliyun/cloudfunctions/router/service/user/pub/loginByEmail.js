@@ -21,7 +21,14 @@ module.exports = {
 		let { uid } = data;
 		let res = {};
 		// 业务逻辑开始-----------------------------------------------------------
-		let { email, code, type, password, needPermission, myInviteCode } = data;
+		let {
+			email,
+			code,
+			type,
+			password,
+			needPermission,
+			myInviteCode
+		} = data;
 		res = await uniID.loginByEmail({
 			email,
 			code,

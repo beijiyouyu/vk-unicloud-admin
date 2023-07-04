@@ -43,6 +43,8 @@ aliyunOSSUtil.uploadFile = function(obj) {
 		needSave = false,
 		category_id,
 		title,
+		cloudPathRemoveChinese = true, // 删除文件名中的中文
+		cloudDirectory,
 	} = obj;
 	let vk = getApp().globalData.vk;
 	if (title) vk.showLoading(title);
@@ -179,9 +181,11 @@ function getConfig() {
 // 生成文件名
 function createFileName(obj = {}) {
 	let {
+		file,
+		filePath,
 		index = 0,
-			file,
-			filePath,
+		cloudPathRemoveChinese = true,
+		cloudDirectory
 	} = obj;
 	let vk = getApp().globalData.vk;
 	let aliyunOSS = getConfig();
@@ -195,7 +199,9 @@ function createFileName(obj = {}) {
 		let suffixName = file.name.substring(file.name.lastIndexOf(".") + 1);
 		if (suffixName && suffixName.length < 5) oldName = file.name;
 		// 只保留["数字","英文",".","-"]
-		oldName = oldName.replace(/[^a-zA-Z.-d]/g, '');
+		if (cloudPathRemoveChinese) {
+			oldName = oldName.replace(/[^a-zA-Z.-d]/g, '');
+		}
 		if (oldName.indexOf(".") == 0) oldName = "0" + oldName;
 	}
 	let date = new Date();
@@ -205,13 +211,26 @@ function createFileName(obj = {}) {
 	let dateTimeEnd8 = dateTime.substring(dateTime.length - 8, dateTime.length);
 	let randomNumber = vk.pubfn.random(8); // 8位随机数
 	// 文件路径 = 固定路径名 + 业务路径
+	
+	// 业务路径
 	let servicePath = "";
-	let newFilePath = dirname + "/" + servicePath + dateYYYYMMDD + "/";
+	if (cloudDirectory) {
+		// 如果自定义了上传目录，则使用自定义的上传目录
+		if (cloudDirectory.lastIndexOf("/") !== cloudDirectory.length-1) {
+			cloudDirectory = cloudDirectory + "/";
+		}
+		servicePath = cloudDirectory;
+	} else {
+		// 否则，使用年月日作为上传目录
+		servicePath = dateYYYYMMDD + "/";
+	}
 	// 文件名 = 时间戳后8位 - 随机数8位 + 后缀名
 	let fileNickName = dateTimeEnd8 + randomNumber + "-" + oldName;
-	// 文件名全称(包含文件路径) = 外网域名 + 文件路径 + 文件名
-	let fileFullName = newFilePath + fileNickName;
-	// 外网地址 = 外网域名 + 文件路径 + 文件名
+	// 文件相对路径 = 业务目录 + 文件名
+	let fileRelativePath = servicePath + fileNickName;
+	// 文件名全称（包含文件路径） = 根目录 + 文件相对路径
+	let fileFullName = dirname + "/" + fileRelativePath;
+	// 外网地址 = 外网域名 + 文件名全称
 	let url = host + "/" + fileFullName;
 	fileObj.url = url;
 	fileObj.fileFullName = fileFullName;

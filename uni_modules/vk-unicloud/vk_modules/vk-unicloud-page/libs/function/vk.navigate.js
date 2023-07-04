@@ -224,7 +224,13 @@ util.originalTo = function() {
  * vk.navigate.getOriginalPage();
  */
 util.getOriginalPage = function() {
-	return uni.vk.getVuex('$app.originalPage');
+	if (typeof uni.vk.getVuex === "function") {
+		// 有安装vuex则使用vuex
+		return uni.vk.getVuex('$app.originalPage');
+	} else {
+		// 未安装则使用本地缓存
+		return uni.vk.getStorageSync('vk.navigate.originalPage');
+	}
 };
 
 /**
@@ -233,7 +239,13 @@ util.getOriginalPage = function() {
  */
 util.setOriginalPage = function(originalPage) {
 	uni.vk.navigate.originalPage = originalPage; // 兼容老版本
-	return uni.vk.setVuex('$app.originalPage', originalPage); // 新版本
+	if (typeof uni.vk.getVuex === "function") {
+		// 有安装vuex则使用vuex
+		return uni.vk.setVuex('$app.originalPage', originalPage);
+	} else {
+		// 未安装则使用本地缓存
+		return uni.vk.setStorageSync('vk.navigate.originalPage', originalPage);
+	}
 };
 
 

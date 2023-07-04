@@ -19,20 +19,36 @@ module.exports = {
 		let { uid } = data;
 		let res = { code: -1, msg: '' };
 		// 业务逻辑开始-----------------------------------------------------------
+		if (typeof data.username === "number") data.username = String(data.username).trim();
+		if (typeof data.password === "number") data.password = String(data.password).trim();
+		
 		let {
 			username,
 			password,
 			needPermission,
 			myInviteCode
 		} = data;
-		// username必须以字母开头，长度在6~18之间，只能包含字母、数字和下划线
-		if (!vk.pubfn.test(username, "username")) {
-			return { code: -1, msg: "账号必须以字母开头，长度在6~18之间，只能包含字母、数字和下划线" };
+
+		// 验证规则开始 -----------------------------------------------------------
+		let rules = {
+			username: [
+				{ required: true, validator: vk.pubfn.validator("username"), message: '用户名以字母开头，长度在3~32之间，只能包含字母、数字和下划线', trigger: ['blur', 'change'] }
+			],
+			password: [
+				{ validator: vk.pubfn.validator("password"), message: '密码长度在6~18之间，只能包含字母、数字和下划线', trigger: 'blur' }
+			]
+		};
+		// 验证规则结束 -----------------------------------------------------------
+		// 开始进行验证
+		let formRulesRes = vk.pubfn.formValidate({
+			data: data,
+			rules: rules
+		});
+		if (formRulesRes.code !== 0) {
+			// 表单验证未通过
+			return formRulesRes;
 		}
-		// password 长度在6~18之间，只能包含字母、数字和下划线
-		if (!vk.pubfn.test(password, "pwd")) {
-			return { code: -1, msg: "密码长度在6~18之间，只能包含字母、数字和下划线" };
-		}
+		// 表单验证通过，下面写自己的业务逻辑
 		res = await uniID.register({
 			username,
 			password,
