@@ -1,3 +1,10 @@
+## 2.15.1（2023-07-20）
+* 1、【重要】为了安全性考虑，调整前端的 `vk.request` API，需要手动指定 `uniIdToken: true` 才会在请求头中自动添加 `uni-id-token`
+* 2、【优化】前端 `vk.request` 当满足响应规范时，会自动保存 `token` 和 `userInfo` 以及token失效跳登录页面
+* 3、【优化】新增 `vk.baseDao.setById`（根据ID判断存在则修改，不存在则添加，此为原子操作，非查询再判断）
+* 4、【优化】`user/pub/sendEmailCode` 发送邮件验证码新增针对同一个邮箱每天的次数限制（默认30次，可在函数内修改默认次数）
+* 5、【优化】`user/pub/sendSmsCode` 发送短信验证码新增针对同一个手机号每天的次数限制（默认12次，可在函数内修改默认次数）
+* 完整框架项目地址：`https://ext.dcloud.net.cn/plugin?id=2204`[点击查看](https://ext.dcloud.net.cn/plugin?id=2204)
 ## 2.15.0（2023-07-04）
 * 1、【重要】注册接口统一去除前端的role参数（需替换目录 `router/service/user/pub`）
 * 2、【修复】云端表单验证不支持a.b的问题

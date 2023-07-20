@@ -108,8 +108,14 @@ requestUtil.request = function(obj = {}) {
 	}
 
 	// 自动注入token到请求头开始-----------------------------------------------------------
-	if (typeof vk.getToken === "function") {
-		let uni_id_token = vk.getToken();
+	// 注意：自2.15.1开始，需要手动指定uniIdToken: true 才会自动添加token到请求头里
+	if (typeof vk.getToken === "function" && obj.uniIdToken) {
+		let uni_id_token;
+		if (obj.uniIdToken === true) {
+			uni_id_token = vk.getToken();
+		} else if (typeof obj.uniIdToken === "boolean") {
+			uni_id_token = obj.uniIdToken;
+		}
 		if (uni_id_token) {
 			if (!obj.header) obj.header = {};
 			obj.header["uni-id-token"] = uni_id_token;
@@ -220,7 +226,18 @@ function requestSuccess(obj = {}) {
 		}
 	}
 	if (config.debug) Logger.result = (typeof data == "object") ? vk.pubfn.copyObject(data) : data;
-	if (res.statusCode >= 400 || data.code) {
+	if ([1301, 1302, 30201, 30202, 30203, 30204].indexOf(data.code) > -1 && data.msg.indexOf("token") > -1) {
+		// 执行 login 拦截器函数（跳转到页面页面）
+		let { interceptor = {} } = vk.callFunctionUtil;
+		if (typeof interceptor.login === "function") {
+			interceptor.login({
+				res: data,
+				params,
+				vk
+			});
+		}
+		reject(data);
+	} else if (res.statusCode >= 400 || data.code) {
 		requestFail({
 			res: data,
 			params,

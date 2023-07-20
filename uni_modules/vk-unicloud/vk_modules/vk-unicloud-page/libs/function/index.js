@@ -2060,6 +2060,7 @@ vk.pubfn.fileToBase64({ file }).then(base64 => {
  */
 pubfn.fileToBase64 = function(obj = {}) {
 	let { file } = obj;
+	let filePath = typeof file === "object" ? file.path : file;
 	return new Promise(function(resolve, reject) {
 		// #ifdef H5
 		let reader = new FileReader();
@@ -2081,7 +2082,7 @@ pubfn.fileToBase64 = function(obj = {}) {
 		// #endif
 		// #ifdef MP
 		uni.getFileSystemManager().readFile({
-			filePath: file.path,
+			filePath: filePath,
 			encoding: "base64",
 			success: function(res) {
 				let base64 = res.data;
@@ -2104,7 +2105,7 @@ pubfn.fileToBase64 = function(obj = {}) {
 		// resolve(base64);
 		// #endif
 		// #ifdef APP-PLUS
-		plus.io.resolveLocalFileSystemURL(pubfn.getLocalFilePath(file.path), function(entry) {
+		plus.io.resolveLocalFileSystemURL(pubfn.getLocalFilePath(filePath), function(entry) {
 			entry.file(function(file) {
 				let fileReader = new plus.io.FileReader();
 				fileReader.onload = function(data) {
