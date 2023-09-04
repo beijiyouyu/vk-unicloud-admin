@@ -202,6 +202,7 @@ pubfn.validator = function(type) {
  * 检测文本是否满足指定格式
  * @param {String} str 需要检测的文本
  * @param {String} type 检测类型（忽略大小写）
+ * @param {Boolean} allowEmpty 是否允许为空
  * 包含
  * mobile 手机号码
  * tel 座机
@@ -233,11 +234,14 @@ pubfn.validator = function(type) {
  * image 图片
  * video 视频
  * audio 音频
- * vk.pubfn.test(str, type);
+ * vk.pubfn.test(str, type, allowEmpty);
  */
-pubfn.test = function(str, type = "") {
+pubfn.test = function(str, type = "", allowEmpty=false) {
 	type = type.toLowerCase();
 	let newStr;
+	if (allowEmpty && (str === "" || str === null || str === undefined)) {
+		return true;
+	}
 	switch (type) {
 		case 'mobile': //手机号码
 			return new RegExp(/^1[3|4|5|6|7|8|9][0-9]{9}$/).test(str);
@@ -274,23 +278,23 @@ pubfn.test = function(str, type = "") {
 			return new RegExp(/^(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d$/).test(str);
 		case 'datetime': //日期+时间 2014-01-01 12:00:00
 			return new RegExp(/^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d$/).test(str);
-		case 'english+number': //英文+数字
-			return new RegExp(/^[a-zA-Z0-9]*$/).test(str);
-		case 'english+number+_': //英文+数字+_
-			return new RegExp(/^[a-zA-Z0-9_]*$/).test(str);
-		case 'english+number+_-': //英文+数字+_-
-			return new RegExp(/^[a-zA-Z0-9_-]*$/).test(str);
-		case 'version': //版本号 xx.xx.xx (xx必须是数字)
+		case 'english+number': //英文+数字（空字符串算通过）
+			return new RegExp(/^[a-zA-Z0-9]+$/).test(str);
+		case 'english+number+_': //英文+数字+_（空字符串算通过）
+			return new RegExp(/^[a-zA-Z0-9_]+$/).test(str);
+		case 'english+number+_-': //英文+数字+_-（空字符串算通过）
+			return new RegExp(/^[a-zA-Z0-9_-]+$/).test(str);
+		case 'version': //版本号 xx.xx.xx（xx必须是数字）
 			return new RegExp(/^([1-9]\d|[1-9])(.([1-9]\d|\d)){2}$/).test(str);
-		case 'number': //数字
-			return new RegExp(/^[0-9]*$/).test(str);
-		case 'english': //英文
+		case 'number': //数字（空字符串算通过）
+			return new RegExp(/^[0-9]+$/).test(str);
+		case 'english': //英文（空字符串算通过）
 			return new RegExp(/^[a-zA-Z]+$/).test(str);
-		case 'chinese': //中文
+		case 'chinese': //中文（空字符串算通过）
 			return new RegExp(/^[\u4e00-\u9fa5]+$/gi).test(str);
-		case 'lower': //小写
+		case 'lower': //小写（空字符串算通过）
 			return new RegExp(/^[a-z]+$/).test(str);
-		case 'upper': //大写
+		case 'upper': //大写（空字符串算通过）
 			return new RegExp(/^[A-Z]+$/).test(str);
 		case 'html': //HTML标记
 			return new RegExp(/<("[^"]*"|'[^']*'|[^'">])*>/).test(str);
@@ -762,57 +766,59 @@ pubfn.checkDataExpText = function(data = {}, expText) {
 				let andItemArr = andItem.split("!=");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
-				if (typeof data[key] === "undefined") itemKey = data[key] !== value ? true : false;
-				if (typeof data[key] !== "undefined") itemKey = data[key].toString() !== value ? true : false;
+				
+				itemKey = String(data[key]) !== value ? true : false;
+				
 			} else if (andItem.indexOf("==") > -1) {
 				let andItemArr = andItem.split("==");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
-				if (typeof data[key] === "undefined") itemKey = data[key] == value ? true : false;
-				if (typeof data[key] !== "undefined") itemKey = data[key].toString() == value ? true : false;
+				
+				itemKey = String(data[key]) == value ? true : false;
+				
 			} else if (andItem.indexOf(">=") > -1) {
 				let andItemArr = andItem.split(">=");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
 				if (isNaN(value)) {
-					if (typeof data[key] === "undefined") itemKey = false;
-					if (typeof data[key] !== "undefined") itemKey = data[key].toString() >= value ? true : false;
+					if (typeof data[key] !== "undefined") itemKey = String(data[key]) >= value ? true : false;
+					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
 				} else {
-					if (typeof data[key] === "undefined") itemKey = false;
 					if (typeof data[key] !== "undefined") itemKey = data[key] >= Number(value) ? true : false;
+					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
 				}
 			} else if (andItem.indexOf(">") > -1) {
 				let andItemArr = andItem.split(">");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
 				if (isNaN(value)) {
-					if (typeof data[key] === "undefined") itemKey = false;
-					if (typeof data[key] !== "undefined") itemKey = data[key].toString() > value ? true : false;
+					if (typeof data[key] !== "undefined") itemKey = String(data[key]) > value ? true : false;
+					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
 				} else {
-					if (typeof data[key] === "undefined") itemKey = false;
 					if (typeof data[key] !== "undefined") itemKey = data[key] > Number(value) ? true : false;
+					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
 				}
 			} else if (andItem.indexOf("<=") > -1) {
 				let andItemArr = andItem.split("<=");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
 				if (isNaN(value)) {
-					if (typeof data[key] === "undefined") itemKey = false;
-					if (typeof data[key] !== "undefined") itemKey = data[key].toString() <= value ? true : false;
+					if (typeof data[key] !== "undefined") itemKey = String(data[key]) <= value ? true : false;
+					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
 				} else {
-					if (typeof data[key] === "undefined") itemKey = false;
 					if (typeof data[key] !== "undefined") itemKey = data[key] <= Number(value) ? true : false;
+					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
 				}
 			} else if (andItem.indexOf("<") > -1) {
 				let andItemArr = andItem.split("<");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
 				if (isNaN(value)) {
-					if (typeof data[key] === "undefined") itemKey = false;
-					if (typeof data[key] !== "undefined") itemKey = data[key].toString() < value ? true : false;
+					if (typeof data[key] !== "undefined") itemKey = String(data[key]) < value ? true : false;
+					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
 				} else {
-					if (typeof data[key] === "undefined") itemKey = false;
 					if (typeof data[key] !== "undefined") itemKey = data[key] < Number(value) ? true : false;
+					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
 				}
 			} else if (andItem.indexOf("{in}") > -1) {
 				let andItemArr = andItem.split("{in}");
@@ -844,8 +850,9 @@ pubfn.checkDataExpText = function(data = {}, expText) {
 				let andItemArr = andItem.split("=");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
-				if (typeof data[key] === "undefined") itemKey = data[key] == value ? true : false;
-				if (typeof data[key] !== "undefined") itemKey = data[key].toString() == value ? true : false;
+				
+				itemKey = String(data[key]) == value ? true : false;
+				
 				//console.log("key:",key,"value:",value,"data[key]",data[key].toString(),"itemKey:",itemKey);
 			}
 			if (!itemKey) {

@@ -1,3 +1,8 @@
+## 2.15.2（2023-08-15）
+* 【重要】新增地图相关的API [传送门](https://vkdoc.fsq.pub/client/uniCloud/plus/map.html)
+* 【修复】`vk.baseDao.sample` 在腾讯云空间最大只能取20条的bug
+* 【优化】`vk.pubfn.test` 新增参数 `allowEmpty` 控制是否允许为空 [传送门](https://vkdoc.fsq.pub/client/jsapi.html#vk-pubfn-test-%E6%A3%80%E6%B5%8B%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F)
+* 完整框架项目地址：`https://ext.dcloud.net.cn/plugin?id=2204`[点击查看](https://ext.dcloud.net.cn/plugin?id=2204)
 ## 2.15.1（2023-07-20）
 * 1、【重要】为了安全性考虑，调整前端的 `vk.request` API，需要手动指定 `uniIdToken: true` 才会在请求头中自动添加 `uni-id-token`
 * 2、【优化】前端 `vk.request` 当满足响应规范时，会自动保存 `token` 和 `userInfo` 以及token失效跳登录页面
