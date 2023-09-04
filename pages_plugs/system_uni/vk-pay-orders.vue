@@ -41,14 +41,24 @@ var vk = uni.vk;									// vk实例
 var originalForms = {}; 					// 表单初始化数据
 
 const payTypeData = [
-	{ label: "微信 - 小程序", value: "wxpay_mp-weixin", tagType: "success" },
-	{ label: "微信 - APP", value: "wxpay_app-plus", tagType: "success" },
-	{ label: "微信 - H5", value: "wxpay_h5", tagType: "success" },
-	{ label: "微信 - MWEB", value: "wxpay_mweb", tagType: "success" },
-	{ label: "微信 - 公众号", value: "wxpay_h5-weixin", tagType: "success" },
-	{ label: "支付宝 - 小程序", value: "alipay_mp-alipay", tagType: "primary" },
-	{ label: "支付宝 - APP", value: "alipay_app-plus", tagType: "primary" },
-	{ label: "支付宝 - H5", value: "alipay_h5", tagType: "primary" }
+	{ label: "官方渠道 - 微信 - 小程序", value: "wxpay_mp-weixin", tagType: "success" },
+	{ label: "官方渠道 - 微信 - APP", value: "wxpay_app-plus", tagType: "success" },
+	{ label: "官方渠道 - 微信 - H5", value: "wxpay_h5", tagType: "success" },
+	{ label: "官方渠道 - 微信 - MWEB", value: "wxpay_mweb", tagType: "success" },
+	{ label: "官方渠道 - 微信 - 公众号", value: "wxpay_h5-weixin", tagType: "success" },
+	{ label: "官方渠道 - 支付宝 - 小程序", value: "alipay_mp-alipay", tagType: "primary" },
+	{ label: "官方渠道 - 支付宝 - APP", value: "alipay_app-plus", tagType: "primary" },
+	{ label: "官方渠道 - 支付宝 - H5", value: "alipay_h5", tagType: "primary" },
+
+	{ label: "VksPay - 微信 - 小程序", value: "vkspay_mp-weixin", tagType: "success" },
+	{ label: "VksPay - 微信 - APP", value: "vkspay_app-plus", tagType: "success" },
+	{ label: "VksPay - 微信 - H5", value: "vkspay_h5", tagType: "success" }, // 收银台接口 公众号、H5、MWEB、PC扫码均为H5
+	{ label: "VksPay - 微信 - MWEB", value: "vkspay_mweb", tagType: "success" },
+	{ label: "VksPay - 微信 - 公众号", value: "vkspay_h5-weixin", tagType: "success" },
+	{ label: "VksPay - 支付宝 - 小程序", value: "vkspay_mp-alipay", tagType: "primary" },
+	{ label: "VksPay - 支付宝 - APP", value: "vkspay_app-plus", tagType: "primary" },
+	{ label: "VksPay - 支付宝 - H5", value: "vkspay_h5", tagType: "primary" },
+
 ];
 const orderTypeData = [
 	{ label: "商品订单", value: "goods"  },
@@ -85,18 +95,18 @@ export default {
 						data: orderTypeData
 					},
 					{
-						key: "pay_type", title: "支付类型", type: "tag", width: 160,
+						key: "pay_type", title: "支付类型", type: "tag", width: 180,
 						data: payTypeData
 					},
 					{ key: "status", title: "订单状态", type: "tag", width: 110,
 						data: statusData
 					},
-					{ key: "create_date", title: "创建时间", type: "time", width: 140 },
-					{ key: "pay_date", title: "支付时间", type: "time", width: 140 },
+					{ key: "create_date", title: "创建时间", type: "time", width: 160 },
+					{ key: "pay_date", title: "支付时间", type: "time", width: 160 },
 					{ key: "total_fee", title: "总金额", type: "money", width: 110 },
 					{ key: "refund_fee", title: "总退款金额", type: "money", width: 110, defaultValue:"-" },
 					{ key: "refund_num", title: "退款次数", type: "number", width: 80, defaultValue:"-" },
-					{ key: "transaction_id", title: "支付平台订单号", type: "text", width: 220, defaultValue:"-" },
+					{ key: "transaction_id", title: "支付平台订单号", type: "text", width: 260, defaultValue:"-" },
 					{ key: "openid", title: "用户openid", type: "text", width: 280, show: ["detail"] },
 					{
 						key: "refund_list", title: "退款详情", type: "table", width: 360, show: ["detail"],
