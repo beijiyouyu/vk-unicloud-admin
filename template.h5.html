@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="zh-CN">
 	<head>
 		<meta charset="utf-8">
@@ -18,8 +18,10 @@
     <link rel="icon" href="<%= BASE_URL %>static/logo.png"/>
 		<!-- 手动引入element样式，在main.js中引入会报错-->
 		<link rel="stylesheet" href="<%= BASE_URL %>static/plugs/element/index.css"/>
+		<!-- 手动引入quill相关的文件-->
 		<link rel="stylesheet" href="<%= BASE_URL %>static/plugs/quill/index.css"/>
-
+		<script async src="<%= BASE_URL %>static/plugs/quill/quill.min.js"></script>
+		<script async src="<%= BASE_URL %>static/plugs/quill/image-resize.min.js"></script>
 	</head>
 
 	<body>

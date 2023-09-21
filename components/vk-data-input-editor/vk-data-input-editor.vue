@@ -514,7 +514,7 @@
 			}
 		},
 		watch : {
-			value(newVal,oldValue) {
+			value(newVal="",oldValue) {
 				let that = this;
 				let time = Date.now();
 				let { inputTime = 0 } = that;
@@ -552,7 +552,7 @@
 <style lang="scss" scoped>
 	.vk-data-input-editor {
 		box-sizing: border-box !important;
-		border: 2rpx solid #e4e7ed !important;
+		border: 1px solid #e4e7ed !important;
 
 		.wrapper {
 			padding: 5px;
@@ -578,7 +578,7 @@
 			box-sizing: border-box;
 			font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 			position: relative;
-			border-bottom: 2rpx solid #e4e7ed !important;
+			border-bottom: 1px solid #e4e7ed !important;
 		}
 
 
@@ -840,34 +840,34 @@
 	.bg_color{
 		position: absolute;
 		z-index: 100;
-		top: 80rpx;
+		top: 40px;
 		display: grid;
-		grid-template-columns: repeat(7,50rpx);
-		grid-template-rows: repeat(5,50rpx);
-		grid-gap: 10rpx;
-		padding: 15rpx;
-		border-radius: 6rpx;
+		grid-template-columns: repeat(7,30px);
+		grid-template-rows: repeat(5,30px);
+		grid-gap: 5px;
+		padding: 8px;
+		border-radius: 3px;
 		background-color: #FFF;
-		border: 1rpx solid #e4e7ed;;
+		border: 1px solid #e4e7ed;;
 		transform-origin: center 0;
 		transition: transform 0.2s ease-in-out, left 0.2s ease-in-out, opacity 0.3s ease-in-out 0.2s;
 		&::before{
 			position: absolute;
 			top: 0;
-			left: 25rpx;
+			left: 12px;
 			transform: translate(0%,-100%);
 			content: "";
-			border-width: 16rpx;
+			border-width: 8px;
 			border-style: solid;
 			border-color: transparent transparent #e4e7ed transparent;
 		}
 		>text{
 			box-sizing: border-box;
-			font-size: 22rpx;
-			border: 1rpx solid transparent;
+			font-size: 11px;
+			border: 1px solid transparent;
 			transition: all 0.2s;
 			cursor: pointer;
-			border-radius: 4rpx;
+			border-radius: 2px;
 			&:hover{
 				border-color: #000;
 			}
@@ -875,13 +875,13 @@
 	}
 	// 颜色选着了
 	.text_color{
-		left: 0rpx;
+		left: 0px;
 		transform: scaleY(var(--text_opacity));
 		opacity: var(--text_opacity);
 	}
 	// 背景颜色选着面板
 	.bg_color{
-		left: 70rpx;
+		left: 35px;
 		transform: scaleY(var(--bg_opacity));
 		opacity: var(--bg_opacity);
 	}
@@ -894,33 +894,33 @@
 	.fontSize,
 	.header_size{
 		position: absolute;
-		top: 85rpx;
+		top: 42px;
 		left: 50%;
 		z-index: 100;
 		background-color: #fff;
-		border-bottom: 1rpx solid #e4e7ed;
+		border-bottom: 1px solid #e4e7ed;
 		display: flex;
 		flex-direction: column;
 		transform-origin: center 0;
 		transition: transform 0.15s ease-in-out, opacity 0.2s ease-in-out 0.15s;
 		box-shadow: 0 2px 8px rgba(0,0,0,.2);
-		border-radius: 8rpx;
+		border-radius: 4px;
 		&::before{
 			position: absolute;
 			top: 0;
 			left: 50%;
 			transform: translate(-50%,-100%);
 			content: "";
-			border-width: 16rpx;
+			border-width: 8px;
 			border-style: solid;
 			border-color: transparent transparent #e4e7ed transparent;
 		}
 		>text{
-			padding: 8rpx 0;
+			padding: 4px 0;
 			text-align: center;
 			transition: all 0.2s;
 			&:not(:last-of-type){
-				border-bottom: 1rpx solid #e4e7ed;
+				border-bottom: 1px solid #e4e7ed;
 			}
 			&:hover{
 				background-color: rgba(0,0,0,.4);
@@ -929,7 +929,7 @@
 		}
 	}
 	.fontSize{
-		width: 120rpx;
+		width: 60px;
 		transform: translateX(-50%) scaleY(var(--font_size_display));
 		opacity: var(--font_size_display);
 		>text{
@@ -950,27 +950,27 @@
 	}
 	// 字粗细
 	.header_size{
-		width: 90rpx;
+		width: 45px;
 		transform: translateX(-50%) scaleY(var(--header_display));
 		opacity: var(--header_display);
 		>text{
 			&:nth-of-type(1){
-				font-size: 34rpx;
+				font-size: 17px;
 			}
 			&:nth-of-type(2){
-				font-size: 32rpx;
+				font-size: 16px;
 			}
 			&:nth-of-type(3){
-				font-size: 30rpx;
+				font-size: 15px;
 			}
 			&:nth-of-type(4){
-				font-size: 28rpx;
+				font-size: 14px;
 			}
 			&:nth-of-type(5){
-				font-size: 26rpx;
+				font-size: 13px;
 			}
 			&:nth-of-type(6){
-				font-size: 24rpx;
+				font-size: 12px;
 			}
 		}
 	}
@@ -981,16 +981,16 @@
 			position: absolute;
 		  background-color: darkblue;
 		  top: 0 !important;
-		  left: 0rpx !important;
-			width: 70rpx !important;
-			height: 80rpx;
+		  left: 0px !important;
+			width: 35px !important;
+			height: 40px;
 			z-index: 100;
 			opacity: 0;
 			cursor: pointer;
 			>.el-input__inner{
 				background-color: pink;
-				width: 70rpx !important;
-				height: 80rpx !important;
+				width: 35px !important;
+				height: 40px !important;
 				padding: 0 !important;
 				margin: 0 !important;
 				opacity: 0;

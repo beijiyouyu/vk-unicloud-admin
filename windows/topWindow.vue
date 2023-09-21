@@ -54,7 +54,6 @@
 					</view>
 					<view class="navbar-right pointer">
 						<view
-							v-show="vk.getVuex('$user.userInfo.username')"
 							@click="togglePopupMenu"
 							class="navbar-user"
 						>
