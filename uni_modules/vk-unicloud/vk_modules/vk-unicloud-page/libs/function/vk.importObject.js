@@ -1,12 +1,12 @@
 /**
  * 导出云对象实例
- * @param {String} name 云对象路径，如：client/pub 
+ * @param {String} name 云对象路径，如：client/pub
  * @example const pubObject = uni.vk.importObject('client/pub'); // 导入云对象
  * 注意，只能在声明 async 的函数内使用，如：
 async test(){
 	let res = await pubObject.getList({
 		title: "请求中",
-		data: { 
+		data: {
 			a: 1,
 			b: "2"
 		}
@@ -26,14 +26,17 @@ var importObject = function(name, importObjectOptions = {}) {
 			return async function(options) {
 				// 如果importObjectOptions中指定了easy为true，代表options的值就是请求参数
 				if (importObjectOptions.easy) {
-					delete importObjectOptions.easy;
 					options = {
 						data: options
 					}
 				}
 				// 如果importObjectOptions中指定了data，代表有默认请求参数，需要加到请求参数中
 				if (importObjectOptions.data) {
-					options.data = Object.assign(importObjectOptions.data, options.data)
+					if (typeof importObjectOptions.data === "function") {
+						options.data = Object.assign({}, importObjectOptions.data(), options.data)
+					} else {
+						options.data = Object.assign({}, importObjectOptions.data, options.data)
+					}
 				}
 				return uni.vk.callFunction({
 					...importObjectOptions,

@@ -137,8 +137,12 @@ requestUtil.request = function(obj = {}) {
 		Logger.startTime = new Date().getTime();
 		let url = obj.url;
 		let path = obj.url.split("?")[0];
-		path = path.substring(path.indexOf("://") + 3);
-		Logger.domainName = path.substring(0, path.indexOf("/"));
+		if (path.indexOf("://") > -1) {
+			path = path.substring(path.indexOf("://") + 3);
+			Logger.domainName = path.substring(0, path.indexOf("/"));
+		} else {
+			Logger.domainName = "";
+		}
 		Logger.action = path.substring(path.indexOf("/") + 1);
 		Logger.url = url;
 	}

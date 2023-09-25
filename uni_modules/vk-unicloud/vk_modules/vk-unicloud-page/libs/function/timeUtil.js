@@ -87,6 +87,7 @@ util.getTimeByTimeZone = function(date, targetTimezone) {
 util.timeFormat = function(date, fmt = 'yyyy-MM-dd hh:mm:ss', targetTimezone) {
 	try {
 		if (!date) return "";
+		targetTimezone = util.getTargetTimezone(targetTimezone);
 		let nowDate = util.getTimeByTimeZone(date, targetTimezone);
 		let opt = {
 			"M+": nowDate.getMonth() + 1, //月份
@@ -94,9 +95,9 @@ util.timeFormat = function(date, fmt = 'yyyy-MM-dd hh:mm:ss', targetTimezone) {
 			"h+": nowDate.getHours(), //小时
 			"m+": nowDate.getMinutes(), //分
 			"s+": nowDate.getSeconds(), //秒
-			//"w+": nowDate.getDay(), //周
 			"q+": Math.floor((nowDate.getMonth() + 3) / 3), //季度
-			"S": nowDate.getMilliseconds() //毫秒
+			"S": nowDate.getMilliseconds(), //毫秒
+			"Z": `${targetTimezone >= 0 ? '+' : '-'}${Math.abs(targetTimezone).toString().padStart(2, '0')}:00` // 时区
 		};
 		if (/(y+)/.test(fmt)) {
 			fmt = fmt.replace(RegExp.$1, (nowDate.getFullYear() + "").substr(4 - RegExp.$1.length));

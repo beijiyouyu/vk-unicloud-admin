@@ -766,37 +766,41 @@ pubfn.checkDataExpText = function(data = {}, expText) {
 				let andItemArr = andItem.split("!=");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
+				let formValue = pubfn.getData(data,key);
 				
-				itemKey = String(data[key]) !== value ? true : false;
+				itemKey = String(formValue) !== value ? true : false;
 				
 			} else if (andItem.indexOf("==") > -1) {
 				let andItemArr = andItem.split("==");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
+				let formValue = pubfn.getData(data,key);
 				
-				itemKey = String(data[key]) == value ? true : false;
+				itemKey = String(formValue) == value ? true : false;
 				
 			} else if (andItem.indexOf(">=") > -1) {
 				let andItemArr = andItem.split(">=");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
+				let formValue = pubfn.getData(data,key);
 				if (isNaN(value)) {
-					if (typeof data[key] !== "undefined") itemKey = String(data[key]) >= value ? true : false;
-					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
+					if (typeof formValue !== "undefined") itemKey = String(formValue) >= value ? true : false;
+					if (typeof formValue === "undefined" || formValue === null) itemKey = false;
 				} else {
-					if (typeof data[key] !== "undefined") itemKey = data[key] >= Number(value) ? true : false;
-					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
+					if (typeof formValue !== "undefined") itemKey = formValue >= Number(value) ? true : false;
+					if (typeof formValue === "undefined" || formValue === null) itemKey = false;
 				}
 			} else if (andItem.indexOf(">") > -1) {
 				let andItemArr = andItem.split(">");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
+				let formValue = pubfn.getData(data,key);
 				if (isNaN(value)) {
-					if (typeof data[key] !== "undefined") itemKey = String(data[key]) > value ? true : false;
-					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
+					if (typeof formValue !== "undefined") itemKey = String(formValue) > value ? true : false;
+					if (typeof formValue === "undefined" || formValue === null) itemKey = false;
 				} else {
-					if (typeof data[key] !== "undefined") itemKey = data[key] > Number(value) ? true : false;
-					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
+					if (typeof formValue !== "undefined") itemKey = formValue > Number(value) ? true : false;
+					if (typeof formValue === "undefined" || formValue === null) itemKey = false;
 				}
 			} else if (andItem.indexOf("<=") > -1) {
 				let andItemArr = andItem.split("<=");
@@ -813,47 +817,51 @@ pubfn.checkDataExpText = function(data = {}, expText) {
 				let andItemArr = andItem.split("<");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
+				let formValue = pubfn.getData(data,key);
 				if (isNaN(value)) {
-					if (typeof data[key] !== "undefined") itemKey = String(data[key]) < value ? true : false;
-					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
+					if (typeof formValue !== "undefined") itemKey = String(formValue) < value ? true : false;
+					if (typeof formValue === "undefined" || formValue === null) itemKey = false;
 				} else {
-					if (typeof data[key] !== "undefined") itemKey = data[key] < Number(value) ? true : false;
-					if (typeof data[key] === "undefined" || data[key] === null) itemKey = false;
+					if (typeof formValue !== "undefined") itemKey = formValue < Number(value) ? true : false;
+					if (typeof formValue === "undefined" || formValue === null) itemKey = false;
 				}
 			} else if (andItem.indexOf("{in}") > -1) {
 				let andItemArr = andItem.split("{in}");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
-				if (Array.isArray(data[key])) {
-					let index = data[key].findIndex(item => {
+				let formValue = pubfn.getData(data,key);
+				if (Array.isArray(formValue)) {
+					let index = formValue.findIndex(item => {
 						return item.toString() === value.toString();
 					});
 					itemKey = index > -1 ? true : false;
 				} else {
 					itemKey = false;
 				}
-				//itemKey = (Array.isArray(data[key]) && data[key].indexOf(value) > -1 ) ? true : false;
+				//itemKey = (Array.isArray(formValue) && formValue.indexOf(value) > -1 ) ? true : false;
 			} else if (andItem.indexOf("{nin}") > -1) {
 				let andItemArr = andItem.split("{nin}");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
-				if (Array.isArray(data[key])) {
-					let index = data[key].findIndex(item => {
+				let formValue = pubfn.getData(data,key);
+				if (Array.isArray(formValue)) {
+					let index = formValue.findIndex(item => {
 						return item.toString() === value.toString();
 					});
 					itemKey = index < 0 ? true : false;
 				} else {
 					itemKey = false;
 				}
-				//itemKey = (Array.isArray(data[key]) && data[key].indexOf(value) < 0 ) ? true : false;
+				//itemKey = (Array.isArray(formValue) && formValue.indexOf(value) < 0 ) ? true : false;
 			} else {
 				let andItemArr = andItem.split("=");
 				let key = andItemArr[0];
 				let value = andItemArr[1];
+				let formValue = pubfn.getData(data,key);
 				
-				itemKey = String(data[key]) == value ? true : false;
+				itemKey = String(formValue) == value ? true : false;
 				
-				//console.log("key:",key,"value:",value,"data[key]",data[key].toString(),"itemKey:",itemKey);
+				//console.log("key:",key,"value:",value,"formValue",formValue.toString(),"itemKey:",itemKey);
 			}
 			if (!itemKey) {
 				break;

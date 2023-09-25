@@ -247,11 +247,11 @@ export default {
 				let index = res.tapIndex;
 				let text = list[index];
 				let g = { index, text };
-				console.log(g);
+				//console.log(g);
 				if (typeof success == "function") success(g);
 			},
 			fail: function(res) {
-				console.log(res);
+				//console.log(res);
 				if (typeof fail == "function") fail(res);
 			},
 			complete: function(res) {
