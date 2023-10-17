@@ -66,6 +66,17 @@ module.exports = {
 		if (addUserRes.code !== 0 || !addUserRes.uid) {
 			return addUserRes;
 		}
+		
+		try {
+			// 判断是否需要设置邀请码
+			let autoSetInviteCode = vk.pubfn.getUniIdConfig(config, "autoSetInviteCode");
+			if (autoSetInviteCode) {
+				uniID.setUserInviteCode({
+					uid: addUserRes.uid
+				});
+			}
+		} catch(err){}
+		
 		// 用户其他信息
 		let dataJson = {
 			nickname,
