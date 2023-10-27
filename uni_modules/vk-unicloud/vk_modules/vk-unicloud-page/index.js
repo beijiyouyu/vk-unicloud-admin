@@ -13,14 +13,16 @@ import aliyunOSSUtil      from './libs/function/aliyunOSSUtil'
 import openapi            from './libs/openapi/index'
 import requestUtil        from './libs/function/vk.request'
 import importObject       from './libs/function/vk.importObject'
-
 import filters            from './libs/function/vk.filters'
+import eventManager       from './libs/function/vk.eventManager'
+
 import mixin              from './libs/mixin/mixin.js'
 import initPermission     from './libs/function/permission'
 import storeMixin         from './libs/store/mixin/mixin'
 import initGlobalError    from './libs/store/libs/error'
 import consoleLog         from './libs/install/console.log'
 import updateManager      from './libs/function/updateManager.js'
+
 // #ifdef H5
 import h5                 from './libs/function/vk.h5'
 // #endif
@@ -111,7 +113,9 @@ var vk = {
 	// 发起URL请求
 	request: requestUtil.request,
 	// 导出云对象
-	importObject
+	importObject,
+	// 事件管理
+	...eventManager
 };
 // vk实例初始化
 vk.init = function(obj = {}) {

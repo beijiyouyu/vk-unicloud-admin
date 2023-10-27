@@ -429,18 +429,27 @@ util.checkAllowShare = function(obj) {
 			pagesRule
 		});
 		// #ifdef MP
-		let menus = pagesRule.menus || ['shareAppMessage', 'shareTimeline'];
-		if (res.key) {
-			//console.log("允许分享");
-			uni.showShareMenu({
-				withShareTicket: false,
-				menus
-			});
-		} else {
-			//console.log("禁止分享");
-			uni.hideShareMenu({
-				menus
-			})
+		let supported = true; // 是否支持该API
+		// #ifdef MP-MP-BAIDU
+		supported = false; // 百度小程序不支持
+		// #endif
+		if (supported) {
+			let menus = pagesRule.menus || ['shareAppMessage', 'shareTimeline'];
+			// #ifdef MP-TOUTIAO
+			menus = ['share', 'record'];
+			// #endif
+			if (res.key) {
+				//console.log("允许分享");
+				uni.showShareMenu({
+					withShareTicket: false,
+					menus
+				});
+			} else {
+				//console.log("禁止分享");
+				uni.hideShareMenu({
+					menus
+				});
+			}
 		}
 		// #endif
 	}

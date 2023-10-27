@@ -1,6 +1,10 @@
 /**
  * 导出云对象实例
  * @param {String} name 云对象路径，如：client/pub
+ * @param {Object} importObjectOptions - 导入云对象的选项
+ * @param {boolean} importObjectOptions.easy - 是否采用简单模式（默认为false）
+ * @param {Object|function} importObjectOptions.data - 默认请求参数，可以是对象或函数
+ * @returns {Proxy} - 云对象实例的代理对象
  * @example const pubObject = uni.vk.importObject('client/pub'); // 导入云对象
  * 注意，只能在声明 async 的函数内使用，如：
 async test(){

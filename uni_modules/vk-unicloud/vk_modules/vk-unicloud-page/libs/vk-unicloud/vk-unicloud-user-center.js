@@ -679,6 +679,31 @@ export default {
 		});
 	},
 	/**
+	 * 获取公众号jsapi签名
+	 * @param {String} url 浏览器上的地址，不传则自动获取
+	 * res 返回参数说明
+	 * @param {Number} code 错误码，0表示成功
+	 * @param {String} msg 详细信息
+	 */
+	getWeiXinJsapiSign(obj = {}) {
+		// 此接口仅微信公众号可调用
+		// #ifdef H5
+		let env = vk.h5.getEnv();
+		if (env === "h5-weixin") {
+			if (!obj.data) {
+				obj.data = {};
+			}
+			if (!obj.data.url) {
+				obj.data.url = window.location.href;
+			}
+			return callFunction({
+				...obj,
+				url: 'user/pub/getWeiXinJsapiSign',
+			});
+		}
+		// #endif
+	},
+	/**
 	 * 获取支付宝code
 	 */
 	getAlipayCode() {

@@ -92,5 +92,11 @@
             }
         }
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "networkTimeout": {
+      "request": 60000,
+      "connectSocket": 60000,
+      "uploadFile": 6000000,
+      "downloadFile": 6000000
+    }
 }
