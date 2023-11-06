@@ -1,6 +1,6 @@
-* 【升级】`vk-unicloud-admin-ui` 包升级至 `1.17.46`
-* 【修复】用户管理-添加用户时uni-id的配置autoSetInviteCode无效的问题
-* 【优化】`万能表单` radio 新增direction属性，支持设置竖向排列
+* 【升级】`vk-unicloud-admin-ui` 包升级至 `1.17.50`
+* 【修复】`万能表单` 文件上传组件按钮太长样式错误的问题
+* 【优化】`万能表格` 默认排序字段不在columns中时增加报错提示
 
 
 ##### 框架更新步骤 [点击查看](https://vkdoc.fsq.pub/admin/1/update.html)

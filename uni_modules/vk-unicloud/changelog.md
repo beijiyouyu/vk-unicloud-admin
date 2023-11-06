@@ -1,3 +1,6 @@
+## 2.16.1（2023-11-06）
+* 【修复】vk实例对象在非router类型的云函数中运行 `vk.crypto.aes.decrypt` 可能报解密失败的问题。
+* 完整框架项目地址：`https://ext.dcloud.net.cn/plugin?id=2204`[点击查看](https://ext.dcloud.net.cn/plugin?id=2204)
 ## 2.16.0（2023-10-27）
 * 【重要】新增 `微信公众号jsapi` 相关接口，可实现微信公众号的快速开发。[传送门](https://vkdoc.fsq.pub/client/uniCloud/plus/weixin-h5-jsapi.html)
 * 【新增】`vk.notifyEventReady(eventName, data)` 通知特定事件已准备就绪，并将数据传递给awaitEventReady注册的回调函数。一定会在 awaitEventReady 函数被调用之前触发。[传送门](https://vkdoc.fsq.pub/client/jsapi.html#vk-notifyeventready)
